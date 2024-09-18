@@ -4,7 +4,7 @@ language: VA
 author: Toni Santos Silvestre [https://github.com/ToniSantosSilvestre]
 subject: Sistemes de Gestió Empresarial
 keywords: [ERP-CRM, 2024, SGE, Python]
-IES: CIPFP Batoi [portal.edu.gva.es/cipfpbatoi/]
+IES: CIPFP Batoi [https://portal.edu.gva.es/cipfpbatoi/]
 header: ${title} - ${subject} (ver: ${today})
 footer:${currentFileName}.pdf - ${author} - ${IES} - ${pageNo}/${pageCount}
 typora-root-url:${filename}/../
@@ -32,6 +32,8 @@ Abans de fer la instal·lació, configuració, explotació i adequació de siste
 
 En el mercat actual trobem un gran nombre d’aplicacions que poden tenir  utilitat a les empreses. Totes elles van acompanyades d’un determinat  tipus de llicència. Per altra banda, ha proliferat un gran nombre de  tipus de llicències de programari. En conseqüència, ens cal poder  reconèixer la llicència que acompanya cada programari i les seues  implicacions.
 
+`Una llicència de programari és l’autorització o permís concedit pels autors del programari per poder-lo utilitzar, baix uns drets i deures.`
+
 El nostre objectiu no és conèixer l’evolució que han tingut els conceptes programari lliure i programari privatiu, sinó conèixer els conceptes existents i utilitzats en el moment actual.
 
 Pel que fa al programari lliure, ens cal saber que, segons la Free Software Foundation, un programari és lliure quan garanteix les **quatre llibertats** següents (enumerades a partir del valor zero); davant d’aquesta definició, qualsevol programari que violi alguna de les quatre llibertats passa a ser programari privatiu. Així, un programari és lliure quan es té: 
@@ -39,7 +41,7 @@ Pel que fa al programari lliure, ens cal saber que, segons la Free Software Foun
 1. Llibertat d’utilitzar el programa per a qualsevol propòsit.
 2. Llibertat d’estudiar el funcionament del programa, modificant-lo i adaptant-lo a nous requisits.
 3. Llibertat de distribuir còpies del programa.
-4 Llibertat de millorar el programa i fer públiques les millores, de manera que tota la comunitat se’n beneficie.
+4.  Llibertat de millorar el programa i fer públiques les millores, de manera que tota la comunitat se’n beneficie.
 
 Sovint, el concepte programari lliure es confon amb programari gratuït i/o amb codi obert i els tres conceptes són diferents, malgrat tenir punts en comú:
 
@@ -67,4 +69,42 @@ Pels defensors del codi obert, el fet de tenir accés total al codi font del pro
 
 Pels defensors del programari lliure allò que importa és la defensa de les llibertats; l’accés al codi és conseqüència de les llibertats 1 i 3 i la qualitat del codi tancat no té per què ser inferior a la del codi obert.
 
-La distinció dels conceptes programari lliure, programari privatiu i codi obert és el primer pas per categoritzar un programari, però ens manca conèixer més conceptes utilitzats actualment. La figura.1, original de Chao-Kuei i posteriorment actualitzada per altres, situa les diferents categories del programari, que ens cal identificar: 
+La distinció dels conceptes programari lliure, programari privatiu i codi obert és el primer pas per categoritzar un programari, però ens manca conèixer més conceptes utilitzats actualment. La figura 1.1, original de Chao-Kuei i posteriorment actualitzada per altres, situa les diferents categories del programari, que ens cal identificar: 
+
+![Figura 1.1 Diferents categories de programari ](assets/imatges/u1_importa1_image_2.png)
+
+1. Programari **de domini públic**: programari que no està protegit amb copyright. El copyright reflectix  la possessió del dret d’explotació i, per tant, només el pot fer constar el titular o cessionari d’aquest dret.
+
+2. Programari **baix \*copyleft\*** (còpia permesa): les llicències *copyleft* són aquelles que exercixen els autors del programari, emparats en la  legislació de copyright, per permetre la lliure distribució de còpies i  versions modificades d’una determinada obra. La majoria de les  llicències *copyleft* exigixen que els drets concedits es mantinguen en les versions modificades del producte.
+
+3. Programari **baix GPL**: la llicència GPL (Llicència Pública General de GNU) és una llicència creada per la *Free Software Foundation*, orientada a protegir la lliure distribució, modificació i utilització  del programari, de manera que el programari cobert per aquesta llicència és programari lliure i queda protegit de qualsevol intent d’apropiació  que restringisca les llibertats del programari lliure. La formulació de GPL és tan restrictiva que impedeix que el programari baix d'aquesta llicència pugui ser integrat en programari privatiu.
+
+4. Programari **baix llicències laxes o permissives**: les llicències laxes o permissives són llicències de programari lliure  flexibles respecte a la distribució, de manera que el programari puga  ser redistribuït com a programari lliure o privatiu. Són llicències  sense *copyleft*, ja que consideren que el treball derivat no té  per què mantenir el mateix règim de drets d’autor que l’original. Això  dóna total llibertat a qui rep el programari per desenvolupar-ne  qualsevol producte derivat, i li permet escollir entre l’ampli ventall  de llicències existents. Des del punt de vista dels usuaris, però,  aquestes llicències es poden considerar com una restricció a les  llibertats que defensa el programari lliure. Exemples de llicències  d’aquest tipus són les llicències BSD i MIT.
+
+5. Programari **de prova** (*shareware*): les llicències *shareware* autoritzen la utilització d’un programa per tal que l’usuari l’avalue i posteriorment l’adquirisa. Aquest programari acostuma a tenir unes  limitacions, ja siga en el temps d’utilització o en les funcionalitats  permeses.
+
+## 1.2 Tipus de desplegament i requisits associats
+
+Tradicionalment, les aplicacions ERP/CRM/BI han estat allotjades a les instal·lacions de les organitzacions compradores de les llicències de l’aplicació; desplegament conegut majoritàriament com a on-premise i, en menor grau, com a in-house. Però això està canviant.
+
+La història dels tipus de desplegament de les aplicacions de gestió empresarial ha anat lligada a l’evolució que ha tingut la tecnologia. En aquests moments podem dir que estem entrant en una nova època: l’època de la informàtica en núvol (cloud computing) i amb ella, diversos models de desplegament (IaaS, PaaS i SaaS) que s’imposaran o conviuran amb el model tradicional on-premise.
+
+Per saber on som, ens convé, en un primer lloc, conèixer els tipus de desplegament que hi ha hagut al llarg de la història i, per poder dur a terme desplegaments en el moment actual, ens cal poder distingir els requisits associats.
+
+### 1.2.1 Des dels 'mainframes' fins al 'cloud computing'
+
+En la **primera època** (la dècada dels 60 i dels 70) les aplicacions residien en grans ordinadors (mainframes) ubicats en les dependències de l’organització i els usuaris disposaven de terminals (pantalles sense memòria ni capacitat de procés) connectades amb l’ordinador central.
+
+La **segona època** arriba en la dècada dels 80, amb l’eclosió dels ordinadors personals. Les aplicacions empresarials van anar adoptant l’arquitectura de dues capes (client-servidor), en les quals continua existint l’ordinador central (servidor –un o diversos–) que conté les bases de dades i en la qual la terminal de l’anterior època queda substituïda per l’ordinador personal que, en disposar de memòria i capacitat de procés, incorpora les aplicacions a executar. L’arquitectura client-servidor agreuja prompte el problema del manteniment de les aplicacions, ja que cada vegada que la lògica de negoci canvia o evoluciona cal actualitzar l’aplicació en tots els ordinadors personals clients.
+
+Per aquest motiu, s’adopta ben prompte** l’arquitectura de tres capes** (presentació-negoci-dades) il·lustrada a la figura 1.2, en la qual els clients tenen aplicacions senzilles que únicament presenten les dades subministrades per un o diversos servidors d’aplicacions, contenidors de la capa de negoci, que confeccionen aquelles dades a partir de la informació subministrada pels servidors de la capa de dades.
+
+![Figura 1.2 Arquitectura de tres capes ](assets/imatges/u1_importa1_image_3.png)
+
+La **tercera època** s’inicia a mitjans de la dècada dels 90, coincidint amb el *boom* d’Internet i va acompanyada de la contínua millora de l’amplada de  banda. Les aplicacions empresarials busquen mecanismes per facilitar la  connexió dels òrgans de comandament de les empreses des d’ubicacions  remotes. Això fa que proliferen programaris que, aprofitant Internet,  faciliten la connectivitat remota i obrin en els dispositius remots  (portàtils i PDA) sessions client contra el servidor d’aplicacions. De  ben segur que un dels programaris més coneguts és l’escriptori remot del sistema operatiu Microsoft Windows. Però aquests programaris presenten  un problema: cal tenir instal·lat en el dispositiu remot el programari  adequat per poder establir la connexió i això no sempre és factible. Ara bé, sense por a equivocar-nos, quin és el programari que tenen avui en  dia tots els dispositius que es connecten a Internet, siga quin siga  el sistema operatiu utilitzat (Windows, Linux, Mac, iOS, Android…)? Un  navegador, veritat? En conseqüència, es tracta d’aconseguir que a través del  navegador puguem executar les aplicacions empresarials.
+
+Durant la primera dècada del **segle XXI**, encara dins la  tercera època, les aplicacions empresarials es van acomodant a la nova  situació tecnològica i faciliten solucions accessibles des dels  navegadors web. L’arquitectura de tres capes continua sent vàlida per a  la nova situació. Simplement cal afegir un servidor web davant el(s)  servidor(s) d’aplicacions per permetre la connexió des dels navegadors.  Els clients tradicionals poden continuar existint i es comuniquen  directament amb el(s) servidor(s) d’aplicacions. La [figura.3](https://ioc.xtec.cat/materials/FP/Recursos/fp_dam_m10_/web/fp_dam_m10_htmlindex/WebContent/u1/a1/continguts.html#XXAFigura3) n’il·lustra la situació. 
+
+En aquesta nova arquitectura hi ha desavinences sobre la capa on ubicar  el servidor web. Hi ha autors que, a causa del fet que el servidor web  simplement s’encarrega de confeccionar les pàgines que es visualitzen en el navegador, el consideren com a part de la capa de presentació.  D’altres, com que és un servidor d’aplicacions, l’ajunten amb els  servidors d’aplicacions on hi ha la capa de negoci. Per últim, hi ha  autors que parlen d’arquitectura de quatre capes, destinant una capa  específicament al servidor web. 
+
+L’arquitectura de quatre capes (aplicacions empresarials que permeten  l’accés web) és d’extrema actualitat. Les aplicacions que no incorporen  aquesta funcionalitat estan abocades a la desaparició. Poden sobreviure a causa del cost que suposa un canvi total de programari, però  difícilment podran ampliar la seva quota de mercat.

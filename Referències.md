@@ -4,7 +4,7 @@ language: VA
 author: Toni Santos Silvestre [https://github.com/ToniSantosSilvestre]
 subject: Sistemes de Gestió Empresarial
 keywords: [ERP-CRM, 2024, SGE, Python]
-IES: CIPFP Batoi [portal.edu.gva.es/cipfpbatoi/]
+IES: CIPFP Batoi [https://portal.edu.gva.es/cipfpbatoi/]
 header: ${title} - ${subject} (ver: ${today})
 footer:${currentFileName}.pdf - ${author} - ${IES} - ${pageNo}/${pageCount}
 typora-root-url:${filename}/../
