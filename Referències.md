@@ -35,30 +35,30 @@ Portal en llengua castellana sobre ERP que recull l’actualitat del  sector (no
 
 Portal en llengua castellana sobre BI que recull l’actualitat del sector (notícies, productes, conferències, seminaris en línia…).
 
-[www.demosdesoftware.com](www.demosdesoftware.com)
+[www.demosdesoftware.com](http://www.demosdesoftware.com)
 
 Portal en llengua castellana dedicat a demostracions i presentacions de programari corporatiu (ERP, CRM, BI…).
 
-[www.tecnowebinars.com](www.tecnowebinars.com)
+[www.tecnowebinars.com](http://www.tecnowebinars.com)
 
 Calendari de seminaris tecnològics gratuïts en línia, organitzats per la xarxa IT-SPAIN.NET, en el qual podem anar-nos mantenint al dia en les novetats de tècniques i productes vinculats a programari corporatiu (ERP, CRM, BI…).
 
-[www.odoo.com/es_ES/](www.odoo.com/es_ES/)
+[www.odoo.com/es_ES/](http://www.odoo.com/es_ES/)
 
 Portal d’Odoo on es pot descarregar aquest ERP i accedir a la documentació oficial.
 
-[apps.odoo.com/apps](apps.odoo.com/apps)
+[apps.odoo.com/apps](http://apps.odoo.com/apps)
 
 Portal on resideixen tots els components (add-ons) que podem incorporar a l’Odoo.
 
-[www.postgresql.org](www.postgresql.org)
+[www.postgresql.org](http://www.postgresql.org)
 
 Portal oficial de l’SGBD PostgreSQL des del qual es poden descarregar les diverses versions amb la seva documentació.
 
-[odoo-community.org/](odoo-community.org/)
+[odoo-community.org/](http://odoo-community.org/)
 
 Portal de l’Odoo community association, grup que desenvolupa mòduls Odoo per a assegurar la seva continuïtat com a software full Open Source.
 
-[www.aeodoo.org/aeodoo](www.aeodoo.org/aeodoo)
+[www.aeodoo.org/aeodoo](http://www.aeodoo.org/aeodoo)
 
 Associació Espanyola d’Odoo. Grup que pertany a l’Odoo OCA i que desenvolupa contingut per a l’adaptació d’Odoo a la legislació tributària espanyola. 
