@@ -79,7 +79,7 @@ La distinció dels conceptes programari lliure, programari privatiu i codi obert
 
 3. Programari **baix GPL**: la llicència GPL (Llicència Pública General de GNU) és una llicència creada per la *Free Software Foundation*, orientada a protegir la lliure distribució, modificació i utilització  del programari, de manera que el programari cobert per aquesta llicència és programari lliure i queda protegit de qualsevol intent d’apropiació  que restringisca les llibertats del programari lliure. La formulació de GPL és tan restrictiva que impedeix que el programari baix d'aquesta llicència pugui ser integrat en programari privatiu.
 
-4. Programari **baix llicències laxes o permissives**: les llicències laxes o permissives són llicències de programari lliure  flexibles respecte a la distribució, de manera que el programari puga  ser redistribuït com a programari lliure o privatiu. Són llicències  sense *copyleft*, ja que consideren que el treball derivat no té  per què mantenir el mateix règim de drets d’autor que l’original. Això  dóna total llibertat a qui rep el programari per desenvolupar-ne  qualsevol producte derivat, i li permet escollir entre l’ampli ventall  de llicències existents. Des del punt de vista dels usuaris, però,  aquestes llicències es poden considerar com una restricció a les  llibertats que defensa el programari lliure. Exemples de llicències  d’aquest tipus són les llicències BSD i MIT.
+4. Programari **baix llicències laxes o permissives**: les llicències laxes o permissives són llicències de programari lliure  flexibles respecte a la distribució, de manera que el programari puga  ser redistribuït com a programari lliure o privatiu. Són llicències  sense *copyleft*, ja que consideren que el treball derivat no té  per què mantenir el mateix règim de drets d’autor que l’original. Això  dóna total llibertat a qui rep el programari per desenvolupar-ne  qualsevol producte derivat, i li permet escollir entre l’ampli ventall  de llicències existents. Des del punt de vista dels usuaris, però,  aquestes llicències es poden considerar com una restricció a les  llibertats que defensa el programari lliure. Exemples de llicències  d’aquest tipus són les llicències BSD, MIT o MPL.
 
 5. Programari **de prova** (*shareware*): les llicències *shareware* autoritzen la utilització d’un programa per tal que l’usuari l’avalue i posteriorment l’adquirisa. Aquest programari acostuma a tenir unes  limitacions, ja siga en el temps d’utilització o en les funcionalitats  permeses.
 
@@ -93,11 +93,15 @@ Per saber on som, ens convé, en un primer lloc, conèixer els tipus de desplega
 
 ### 1.2.1 Des dels 'mainframes' fins al 'cloud computing'
 
+A continuació s'adjunta un esquema amb la progressió dels ERPs des de les primeres configuracions en grans màquines a la configuració descentralitzada actual on el model tendix a bolcar tota la informació en el mòdul.
+
+![Figura 1.1 Evolució dels ERPs ](assets/imatges/evolucio_ERP.png)
+
 En la **primera època** (la dècada dels 60 i dels 70) les aplicacions residien en grans ordinadors (mainframes) ubicats en les dependències de l’organització i els usuaris disposaven de terminals (pantalles sense memòria ni capacitat de procés) connectades amb l’ordinador central.
 
 La **segona època** arriba en la dècada dels 80, amb l’eclosió dels ordinadors personals. Les aplicacions empresarials van anar adoptant l’arquitectura de dues capes (client-servidor), en les quals continua existint l’ordinador central (servidor –un o diversos–) que conté les bases de dades i en la qual la terminal de l’anterior època queda substituïda per l’ordinador personal que, en disposar de memòria i capacitat de procés, incorpora les aplicacions a executar. L’arquitectura client-servidor agreuja prompte el problema del manteniment de les aplicacions, ja que cada vegada que la lògica de negoci canvia o evoluciona cal actualitzar l’aplicació en tots els ordinadors personals clients.
 
-Per aquest motiu, s’adopta ben prompte** l’arquitectura de tres capes** (presentació-negoci-dades) il·lustrada a la figura 1.2, en la qual els clients tenen aplicacions senzilles que únicament presenten les dades subministrades per un o diversos servidors d’aplicacions, contenidors de la capa de negoci, que confeccionen aquelles dades a partir de la informació subministrada pels servidors de la capa de dades.
+Per aquest motiu, s’adopta ben prompte ** l’arquitectura de tres capes**  (presentació-negoci-dades) il·lustrada a la figura 1.2, en la qual els clients tenen aplicacions senzilles que únicament presenten les dades subministrades per un o diversos servidors d’aplicacions, contenidors de la capa de negoci, que confeccionen aquelles dades a partir de la informació subministrada pels servidors de la capa de dades.
 
 ![Figura 1.2 Arquitectura de tres capes ](assets/imatges/u1_importa1_image_3.png)
 
@@ -120,6 +124,8 @@ Hi ha tres models d’informàtica en núvol:
 3. **Programari com a servei** (*SaaS*, de Software as a Service), en el qual l’usuari contracta la utilització d’unes determinades aplicacions sobre les quals únicament pot exercir accions de configuració i parametrització permeses pel proveïdor. L’usuari no té cap control sobre l’aplicació, la plataforma i la infraestructura.
 
 Els models IaaS i PaaS ja fa temps que s’estan utilitzant (des que l’amplada de banda ho ha fet possible) i el model SaaS també en aplicacions vinculades a Internet, com per exemple el correu electrònic. En canvi, fins fa ben poc (cap a la dècada dels 2010) no han començat a aparèixer aplicacions empresarials (ERP/CRM/BI) baix el model SaaS. 
+
+![Evolució dels models en el núvol](assets/imatges/evolucio_models_cloud.png)
 
 Entre els beneficis del model SaaS, cal considerar:
 
@@ -163,7 +169,7 @@ Per atendre a aquestes necessitats, cal avaluar què necessitem i què tenim. Aq
 
 ## 1.3 Sistemes ERP
 
-Els sistemes ERP, de l’anglès *Enterprise Resource Planning*, coneguts àmpliament com a sistemes de ** ‘planificació de recursos empresarials’**, són sistemes que integren o pretenen integrar totes les dades i processos d’una organització en un sistema unificat.
+Els sistemes ERP, de l’anglès *Enterprise Resource Planning*, coneguts àmpliament com a sistemes de **planificació de recursos empresarials** , són sistemes que integren o pretenen integrar totes les dades i processos d’una organització en un sistema unificat.
 
 Així doncs, segons la definició anterior, un ERP ha de permetre la gestió de la producció (si l’organització incorpora processos productius), la gestió completa dels circuits de compravenda (logística, distribució, inventari i facturació) i la gestió financera. Poden incorporar també, en moltes ocasions, una gestió de recursos humans. En l’actualitat, molts d’ells incorporen una **gestió de CRM**  (gestió de la relació amb els clients).
 
@@ -179,7 +185,13 @@ Hi ha tres característiques fonamentals que defineixen un ERP:
   - Programes basats en múltiples aplicacions (a vegades denominades suite) independents o modulars que dupliquen la informació (malgrat que l’enllacin automàticament).
   - Programes que no centralitzen la informació en una única base de dades.
   - Programes que no emmagatzemen les dades en un SGBD sinó que utilitzen sistemes gestors de fitxers, anteriors als SGBD.
+
+ ![ERP integra els procesos de l'empresa](assets/imatges/erp_empresa.png)
+
 - **És un sistema modular**: un ERP es compon de diversos mòduls, on cada mòdul se centra en una àrea de negocis de l’empresa. Normalment els ERP tenen uns mòduls troncals (bàsics) que s’adquireixen amb la compra de l’ERP (gestió de compravenda, control d’inventari, comptabilitat) i d’altres mòduls que s’adquirixen segons les necessitats de l’organització (gestió de projectes, gestió de campanyes, gestió de terminals punt de venda, comerç electrònic, producció per fases, traçabilitat, gestió de la qualitat, gestió de la cadena de subministrament…). És molt possible que una empresa no necessite utilitzar, en un inici, tots els mòduls que facilita l’ERP, però és important saber que l’ERP els contempla, de cara a possibles necessitats de futur. En cas que siga necessària la seua utilització, l’organització no es veurà abocada a un canvi de programari en les àrees on ja estava utilitzant l’ERP.
+
+![ERP modular](assets/imatges/erp_modular.png)
+
 -  **És un sistema adaptable**: no hi ha dues empreses iguals i, per això, els ERP han de permetre l’adaptació a necessitats diverses, objectiu que s’assolix a través de la configuració i parametrització dels processos empresarials. Fins i tot alguns ERP disposen d’eines de desenvolupament integrades que permeten desenvolupar processos segons les necessitats de cada empresa.
 
 ### 1.3.2 Funcionalitats dels sistemes ERP
@@ -622,3 +634,61 @@ Els responsables de l’organització tenen per dogma que “no es pot  millorar
 Un ***dashboard*** és un tipus d’interfície  interactiva d’usuari, dissenyada per proporcionar a l’usuari informació  específica relativa a l’estat de l’empresa, representada normalment a  través d’indicadors clau d’acompliment (KPI) i enllaços a informes  rellevants. Existeixen senyals visuals, gràfics i controls de procés que centren l’atenció de l’usuari en les tendències, canvis i excepcions  importants.
 
 Hem d’imaginar un *dashboard* com un gran tauler de  l’organització, on hi ha indicadors (com el tauler d’un vehicle) que  mostren la realitat de les diferents àrees de negoci. Imaginem que quan  un valor d’un indicador baixa per sota d’un límit normal, s’encén una  llum d’alerta que indica que cal posar-hi atenció i, si s’excedeix d’un  valor tolerable, no només s’encén la llum sinó que a més ho indica  mitjançant un senyal auditiu. 
+
+## Activitats
+
+
+
+### 1. Llicències Open Source més utilitzades
+
+L’objectiu d’aquesta activitat és identificar les llicències Open Source més utilitzades.
+
+Visiteu la pàgina web del portal d’[Open Source Initiative](http://opensource.org/) que recull les llicències reconegudes per Open SourceInitiative com a  llicències de codi obert i feu un recull i lectura de les llicències més populars i àmpliament utilitzades, per familiaritzar-se amb els seus  termes.
+
+### 2. Solucions ERP/CRM en el núvol
+
+L’objectiu d’aquesta activitat és identificar els serveis de solucions ERP/CRM en el núvol.
+
+Busqueu tres  productes diferenciats que oferisquen ERP/CRM en modalitat IaaS, PaaS i SaaS.
+
+### 3. Conceptes i funcionalitats al voltant d'ERPs
+
+L’objectiu d’aquesta activitat és conèixer conceptes i funcionalitats al voltant d'ERPs.
+
+Ompliu la graella següent tot descrivint els conceptes indicats:
+
+| Concepte                                                     | Descripció |
+| ------------------------------------------------------------ | ---------- |
+| Administració d’un ERP                                       |            |
+| Fitxers mestres en aplicacions informàtiques i, concretament, en programari de gestió empresarial |            |
+| Tercer                                                       |            |
+| Producte                                                     |            |
+| Taules bàsiques (exemples)                                   |            |
+| Funcionalitats bàsiques a cobrir per un ERP en la fitxa de producte |            |
+| Funcionalitats bàsiques a cobrir per un ERP en el circuit de compra |            |
+| Funcionalitats bàsiques a cobrir per un ERP en el circuit de venda |            |
+| Funcionalitats bàsiques a cobrir per un ERP en un mòdul de fabricació |            |
+| Funcionalitats bàsiques a cobrir per un ERP en un mòdul de serveis |            |
+
+### 4. Diferencia les característiques de les llicències lliures BSD i MPL i exposa dos exemples d’aplicació de cadascuna d’estes dues llicències.
+
+### 5. Conceptes i funcionalitats al voltant d'una solució BI
+
+L’objectiu d’aquesta activitat és conèixer conceptes i funcionalitats al voltant de les solucions BI.
+
+Ompliu la graella següent amb la descripció dels conceptes indicats
+
+|                    Concepte                    | Descripció |
+| :--------------------------------------------: | :--------: |
+|         Intel·ligència de negoci (BI)          |            |
+|                      OLTP                      |            |
+|          Repositori d’una solució BI           |            |
+|      *Data warehouse (magatzem de dades)*      |            |
+|                      ETL                       |            |
+|        *Data mart (aparador de dades)*         |            |
+|  Exemples d’eines analítiques de solucions BI  |            |
+|        *Data mining (mineria de dades)*        |            |
+|                      KPI                       |            |
+|                  *Dashboard*                   |            |
+|                      OLAP                      |            |
+| Cubs multidimensionals o cubs OLAP o hipercubs |            |
