@@ -553,3 +553,72 @@ Un ***data warehouse*** (magatzem de dades) és una base de dades destinada a co
 Un dels principals problemes a l’hora d’implementar un *data warehouse*, radica en el fet que les dades a integrar, en provenir d’orígens  diversos, presenten inconsistències en format i codificació i això  implica la necessitat de dissenyar un procés de filtratge,  reestructuració de les dades i eliminació d’inconsistències abans de ser emmagatzemades en el *data warehouse.* Aquest procés és conegut com a **ETL**, acrònim de ***Extract, Transform and Load***.
 
 La taula 1.2 mostra les principals diferències entre les bases de dades dels sistemes OLTP, dedicades a les operacions del dia a dia, i un *data warehouse*, dedicat a concentrar informació completament orientada a l’anàlisi.
+
+| BBDD Sistemes OLTP | Data warehouse |
+| ----------- | ----------- |
+| Dades operacionals | Dades del negoci rellevants per informació |
+| Orientada a les aplicacions | Orientat a l’analista |
+| Dades actuals | Dades actuals + dades històriques |
+| Dades al detall | Dades resumides amb cert detall |
+| Canvia constantment | Estable |
+
+El *data warehouse* pot estar organitzat en *data marts*. Un ***data mart*** (aparador de dades) és un subconjunt de dades del *data warehouse*, corresponent a una unitat de negoci (àrea) de l’organització. Té  l’objectiu de solucionar la problemàtica d’anàlisi de la corresponent  àrea.
+
+Un *data warehouse* es pot considerar com la col·lecció de *data marts* implementats en les diferents àrees de negoci de l’organització.
+
+Les solucions BI aporten eines analítiques i la potència d’una solució  BI es mesura a partir del nombre d’eines analítiques que facilita i de  la potència de cadascuna d’elles.
+
+Hui en dia les eines analítiques es tipifiquen en: *query&reporting, data mining,* KPI i *anàlisi OLAP*.
+
+Les eines ***query&reporting*** (consultes i  informes) són les tradicionals eines que permeten dissenyar i executar  consultes sobre una base de dades i formatar el resultat en informes. La [figura 1.6](assets/imatges/u1_importa1_image_7.png) mostra que aquestes eines s’apliquen sobre les bases de dades dels sistemes OLTP i sobre el *data warehouse* i *data marts*.
+
+La majoria de sistemes OLTP (ERP, CRP…) faciliten eines *query&reporting* de fàcil aprenentatge que un usuari avantatjat pot utilitzar per dissenyar els informes que necessita i que no estan predefinits en el sistema.
+
+Les eines ***data mining*** (mineria de dades) són  eines d’alt nivell que sobrepassen l’objectiu d’aquest material. A títol informatiu cal saber que la mineria de dades consisteix en l’extracció  no trivial d’informació que resideix de manera implícita en les dades,  que era prèviament desconeguda i que pot resultar útil per algun procés. En altres paraules, la mineria de dades prepara, sondeja i explora les  dades per obtenir informació oculta en elles. 
+
+> *Query&reporting ofimàtic*
+> Les bases de dades ofimàtiques s’utilitzen en moltes ocasions com a  eines query&reporting dels sistemes OLTP i data warehouse, a través  de la connexió ODBC amb les BD del sistema OLTP o data warehouse.
+
+**OLAP** és l’acrònim anglès de **Procés Analític en Línia** (*OnLine Analytical Processing*) per fer referència als sistemes que emmagatzemen grans quantitats de  dades resumides obtingudes a partir de sistemes OLTP, amb l’objectiu  d’efectuar-ne consultes.
+
+El concepte OLAP va molt lligat al concepte *data warehouse* i a vegades es confonen. La diferència radica en el fet que *data warehouse* és un terme que s’utilitza per fer referència a les dades i OLAP és un  concepte que s’utilitza per fer referència a les eines disponibles per  avaluar i analitzar les dades dels *data warehouse*.
+
+En parlar d’anàlisi OLAP apareixen els cubs multidimensionals o cubs OLAP o hipercubs. Un **cub multidimensional** és una representació matricial (N dimensions) de les dades planes  representades via files i columnes en una taula relacional, utilitzat en l’anàlisi OLAP.
+
+> **Exemple simplificat de construcció de 'data warehouse' i hipercub**
+
+> La base de dades d’un ERP (suposem BD relacional) segurament té una taula on s’enregistren les vendes que s’efectuen. Suposem el disseny següent:
+
+> > ** VENDA (#Client, #Producte, #Data, Quantitat, PreuUnitari)
+ON {Client} REFERENCIA CLIENT
+I {Producte} REFERENCIA PRODUCTE **
+
+> Els dissenyadors del data warehouse han decidit que a nivell d’anàlisi no interessa mantenir el client, ni el producte ni la data, però sí que es necessita incorporar el tipus de client, la família de producte i el mes i any en què s’ha efectuat les vendes. Per tant, en el data warehouse s’ha dissenyat la taula següent, que agrupa les quantitats i la mitjana dels preus de venda:
+
+> > ** VENDA_DW(#TipCli, #FamPro, #MesAny, SumQuantitat, AVGPreu) **
+
+El procés ETL que emplena la taula `VENDA_DW` es preocupa de cercar totes les vendes del període que corresponga,  agrupant-les per tipus de client, família de producte i mes o any, tot  sumant les quantitats de producte venudes i calculant la mitjana dels  preus aplicats.
+
+Amb aquest disseny, dins el *data warehouse* s’ha perdut la  informació de detall de client, producte i data de venda. És a dir, s’ha disminuït la granularitat i, en conseqüència, l’anàlisi basada en el *data warehouse* podrà donar resultats pel que fa al tipus de producte, tipus de clients i intervals mensuals, però res respecte a nivell de client, de producte i de  data de venda. Si en el *data warehouse* s’haguera decidit emmagatzemar les dades en una estructura similar a la de la taula `VENDA` del nostre ERP, l’eina d’anàlisi tindria majors possibilitats  analítiques, ja que podria analitzar les dades a nivell de detall i  també pel que fa al resum que facilita `VENDA_DW`, però per fer això és necessari més espai en el *data warehouse*.
+
+En terminologia de BI, la taula `VENDA` és una taula de fets (enregistra els fets que s’han produït) i la taula `VENDA_DW` és una taula agregada de fets. Les anàlisis a nivell resum s’executaran més ràpidament si disposem, en el *data warehouse*, de taules agregades de fets adequades al resum que cal analitzar. No és gens senzill decidir quines dades s’emmagatzemen en el *data warehouse* i amb quin nivell de granularitat.
+
+Les dades de la taula `VENDA_DW` ens permeten construir  diversos cubs multidimensionals, en els quals els atributs per analitzar es representen en els diversos eixos (dimensions) del cub.
+
+Així, si volem analitzar la quantitat de vendes per tipus de producte,  tipus de client i mesos, podem construir el cub tridimensional de la [figura 1.7](assets/imatges/dam_m10_uf1_nf1_09.png). Observem que en el punt `v` hi haurà el valor corresponent a la quantitat de venda del tipus de producte `tp` efectuada per clients del tipus `tc` en el mes `m`.
+
+![Exemple de cub OLAP tridimensional](assets/imatges/dam_m10_uf1_nf1_09.png)
+
+És molt comú que la informació del *data warehouse* s’estructure en cubs multidimensionals, ja que aquests preparen la informació per  respondre a consultes dinàmiques amb un bon rendiment (temps de  resposta). Els cubs multidimensionals no són, però, les úniques  estructures de dades que utilitzen els *data warehouse.*
+
+Per tal de facilitar el disseny de consultes OLAP, a causa que el  llenguatge SQL obligava a escriure consultes complexes, es va crear el  llenguatge MDX (*MultiDimensional Expressions*) que està pensat  específicament per a efectuar consultes sobre cubs OLAP i, per tant, les consultes són molt més simples que les corresponents en el llenguatge  SQL. El llenguatge MDX ha estat acollit per la majoria de proveïdors  d’eines OLAP.
+
+Per finalitzar amb la percepció dels conceptes més utilitzats al voltant de les solucions BI, apareguts tots ells en la [figura 1.6](assets/imatges/u1_importa1_image_7.png), ens manca presentar els *dashboards* i els KPI.
+
+**KPI** és l’acrònim anglès d’**Indicadors Claus d’Acompliment** (*Key Performance Indicators*) per fer referència a mètriques utilitzades per quantificar els  objectius que reflectixen el rendiment d’una organització i que  generalment es recullen en el seu pla estratègic.
+
+Els responsables de l’organització tenen per dogma que “no es pot  millorar allò que no es pot mesurar”. En conseqüència, l’organització  defineix el conjunt de KPI importants per a la seua evolució i per  fer-ne un correcte seguiment es fa necessari disposar de quadres de  comandament o *dashboards*.
+
+Un ***dashboard*** és un tipus d’interfície  interactiva d’usuari, dissenyada per proporcionar a l’usuari informació  específica relativa a l’estat de l’empresa, representada normalment a  través d’indicadors clau d’acompliment (KPI) i enllaços a informes  rellevants. Existeixen senyals visuals, gràfics i controls de procés que centren l’atenció de l’usuari en les tendències, canvis i excepcions  importants.
+
+Hem d’imaginar un *dashboard* com un gran tauler de  l’organització, on hi ha indicadors (com el tauler d’un vehicle) que  mostren la realitat de les diferents àrees de negoci. Imaginem que quan  un valor d’un indicador baixa per sota d’un límit normal, s’encén una  llum d’alerta que indica que cal posar-hi atenció i, si s’excedeix d’un  valor tolerable, no només s’encén la llum sinó que a més ho indica  mitjançant un senyal auditiu. 
