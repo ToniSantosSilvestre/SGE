@@ -61,31 +61,25 @@ especialment aquelles que ofereixen serveis per Internet, es van plantejar vendr
 Amb l'arribada dels "serveis en el núvol" (que realment són servidors d'una altra empresa) les
 empreses paguen una quota (fixa, per temps de còmput, per ús, etc.), però a canvi:
 
-● No realitzen despeses relacionades amb el maquinari (instal·lació i escalat).
-● No realitzen despeses relacionades amb el consum elèctric.
-● Es redueixen de forma dràstica les despeses en manteniment i seguretat.
-● Faciliten l'accés: per a operar amb aquests sistemes les empreses només necessiten un
-dispositiu (ordinador personal, telèfon intel·ligent, etc.) amb connexió a Internet.
-● Si es necessita més potència, només cal contractar-la (escalat vertical/horitzontal).
+- No realitzen despeses relacionades amb el maquinari (instal·lació i escalat).
+- No realitzen despeses relacionades amb el consum elèctric.
+- Es redueixen de forma dràstica les despeses en manteniment i seguretat.
+- Faciliten l'accés: per a operar amb aquests sistemes les empreses només necessiten un dispositiu (ordinador personal, telèfon intel·ligent, etc.) amb connexió a Internet.
+- Si es necessita més potència, només cal contractar-la (escalat vertical/horitzontal).
 
 Tot i això, l'ús de "serveis en el núvol" posseeixen diversos inconvenients:
 
-● En alguns contextos, pot resultar més car que posar en marxa el teu la infraestructura.
-● Les dades estan emmagatzemades físicament en un servidor d'una altra empresa, amb
-possibles problemes relacionats (per exemple, espionatge industrial).
-● Per a l'ús de sistema depenen tant d'una bona connexió a Internet com del bon
-funcionament general de l'empresa que presta serveis.
+- En alguns contextos, pot resultar més car que posar en marxa el teu la infraestructura.
+- Les dades estan emmagatzemades físicament en un servidor d'una altra empresa, amb possibles problemes relacionats (per exemple, espionatge industrial).
+- Per a l'ús de sistema depenen tant d'una bona connexió a Internet com del bon funcionament general de l'empresa que presta serveis.
 
 ### 1.4 Què triar? Sistema en la mateixa empresa o en el núvol?
   No hi ha una resposta "contundent" a aquesta pregunta, ja que depén de 'context i és una cosa a  estudiar a consciència abans d'implantar un sistema.
   Avui dia en els entorns empresarials conviuen les dues opcions esmentades, i fins i tot opcions híbrides (servidor a l'empresa, però suport puntual o serveis en el núvol).
   Els principals factors a l'hora de prendre aquesta decisió són:
 
-- El compliment de les lleis de protecció de dades. Aquest punt sobretot influeix en la decisió
-de contractar o no un "servei en el núvol", ja que guardant determinades dades en
-determinats serveis en el núvol podem estar incomplint la llei.
-  - A Europa hi ha el reglament RGPD i a Espanya la legislació vigent en matèria de
-protecció de dades ve definida per la LOPDGDD.
+- El compliment de les lleis de protecció de dades. Aquest punt sobretot influeix en la decisió de contractar o no un "servei en el núvol", ja que guardant determinades dades en determinats serveis en el núvol podem estar incomplint la llei.
+  - A Europa hi ha el reglament RGPD i a Espanya la legislació vigent en matèria de protecció de dades ve definida per la LOPDGDD.
 - El preu de l'electricitat i el consum del maquinari.
     - Existeixen dispositius maquinaris orientats a tenir un baix consum.
 -  El preu del maquinari.
@@ -161,8 +155,7 @@ xarxa elèctrica.
     - No cal passar-se massa, ja que si ho fem incrementarem tan despeses de maquinari i el consum elèctric sense obtenir un gran benefici. Normalment, aquests programes tenen una documentació en la qual descriuen els requisits mínims.💬 Interessant: si coneixes com usar "Docker", pots ser-te molt útil revisar aquest curs amb
   exemples pràctics https://sergarb1.github.io/CursoIntroduccionADocker
   💬 Interessant: si ja coneixes com usar "Docker", pots ser-te molt útil "CheatSheet"
-  https://raw.githubusercontent.com/sergarb1/CursoIntroduccionADocker/main/FuentesCurso
-  /Docker%20CheatSheet%20COMPLETA.pdf
+  https://raw.githubusercontent.com/sergarb1/CursoIntroduccionADocker/main/FuentesCurso/Docker%20CheatSheet%20COMPLETA.pdf
   Per posar en marxa Odoo 17 en mode producció crearem dos contenidors:
   ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 14.
   ● El segon contenidor contindrà el servidor Odoo.
@@ -366,41 +359,66 @@ el contingut del fitxer “docker-compose.yml” per a entorn de desenvolupament
 **Fitxer “docker-compose.yml” (desenvolupament)**:
 
 >version: '3.3'
- services:
- \# Definimos el servicio Web, en este caso Odoo
-   web:
-     \# Indicamos que imagen de Docker Hub utilizaremos
-     image: odoo:17
-     \# Indicamos que depende de "db", por lo cual debe ser procesada primero "db"
-     depends_on:
-    \- db
-     \# Port Mapping: indicamos que el puerto 8069 del contenedor se mapeara con el mismo puerto en el anfritrion
-     \# Permitiendo acceder a Odoo mediante http://localhost:8069
-    ports:
-    \- 8069:8069
-    # Mapeamos el directorio de los contenedores (como por ejemplo"/mnt/extra-addons" )en un directorio local (como por ejemplo en un directorio "./volumesOdoo/addons") situado en el lugar donde ejecutemos "Docker compose"
-    volumes:
-    - ./volumesOdoo/addons:/mnt/extra-addons
-    - ./volumesOdoo/odoo/filestore:/var/lib/odoo/filestore
-    - ./volumesOdoo/odoo/sessions:/var/lib/odoo/sessions
-    # Definimos variables de entorno de Odoo
-    environment:
-    - HOST=db
-    - USER=odoo
-    - PASSWORD=odoo
-    # Indica que pasa ese parametro al arrancar el servicio Odoo
-    command: --dev=all
-  #Definimos el servicio de la base de datos
-  db:
-    image: postgres:15
-    # Definimos variables de entorno de PostgreSQL
-    environment:
-    - POSTGRES_PASSWORD=odoo
-    - POSTGRES_USER=odoo
-    - POSTGRES_DB=postgres
-    # Mapeamos el directorio del contenedor "var/lib/postgresql/data" en un directorio "./volumesOdoo/dataPostgreSQL" situado en el lugar donde ejecutemos Docker compose"
-    volumes:
-    - ./volumesOdoo/dataPostgreSQL:/var/lib/postgresql/data
+
+> services:
+>      \# Definimos el servicio Web, en este caso Odoo
+>        web:
+>          \# Indicamos que imagen de Docker Hub utilizaremos
+>          image: odoo:17
+>          #Indicamos que depende de "db", por lo cual debe ser procesada primero "db"
+>          depends_on:
+>
+> ​      \- db
+>
+> ​     \# Port Mapping: indicamos que el puerto 8069 del contenedor se mapeara con el mismo puerto en el anfritrion
+>
+> \# Permitiendo acceder a Odoo mediante http://localhost:8069
+>
+> ​    ports:
+>
+> ​      \- 8069:8069
+>
+> ​    \# Mapeamos el directorio de los contenedores (como por ejemplo" /mnt/extra-addons" ) en un directorio local (como por ejemplo en un directorio "./volumesOdoo/addons") situado en el lugar donde ejecutemos "Docker compose"
+>
+> ​     volumes:
+>
+> ​       \- ./volumesOdoo/addons:/mnt/extra-addons
+>
+> ​       \-./volumesOdoo/odoo/filestore:/var/lib/odoo/filestore
+>
+> ​       \-./volumesOdoo/odoo/sessions:/var/lib/odoo/sessions
+>
+> ​    \# Indicamos que el contenedor funcionara con usuario root y no con usuario odoo
+> ​            user: root
+>
+> ​    \# Definimos variables de entorno de Odoo
+>
+> ​    environment:
+>
+> ​       \- HOST=db
+>
+> ​       \-USER=odoo
+>
+> ​       \- PASSWORD=odoo
+>
+>    \# Indica que pasa ese parametro al arrancar el servicio Odoo
+>
+> ​    command: --dev=all
+
+> \# Definimos el servicio de la base de datos
+> db:
+>   image: postgres:15
+>
+> \# Definimos variables de entorno de PostgreSQL
+>   environment:
+>    \- POSTGRES_PASSWORD=odoo
+>    \- POSTGRES_USER=odoo
+>    \- POSTGRES_DB=postgres
+>
+> \# Mapeamos el directorio del contenedor "var/lib/postgresql/data" en un directorio "./volumesOdoo/dataPostgreSQL" situado en el lugar donde ejecutemos "Docker compose"
+>   volumes:
+>
+> \- ./volumesOdoo/dataPostgreSQL:/var/lib/postgresql/data
 
 ## 6. POSADA EN MARXA D'ODOO 17
 
