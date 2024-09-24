@@ -359,8 +359,8 @@ Podem parar el servei complet simplement escrivint:
 
 > docker compose down
 
-Adjuntem a aquesta unitat un zip amb el fitxer “docker-compose.yml” per a entorn de producció i
-amb el fitxer “docker-compose.yml” per entorn de desenvolupament. A continuació, a més mostrem
+Adjuntem a aquesta unitat un zip amb el fitxer [“docker-compose.yml”](assets/Fitxer02-Odoo-Produccio-docker-compose.yml.zip) per a entorn de producció i
+amb el fitxer [“docker-compose.yml”](assets/Fitxer01-Odoo-Desenvolupament-docker-compose.yml.zip) per entorn de desenvolupament. A continuació, a més mostrem
 el contingut del fitxer “docker-compose.yml” per a entorn de desenvolupament.
 
 **Fitxer “docker-compose.yml” (desenvolupament)**:
@@ -368,46 +368,49 @@ el contingut del fitxer “docker-compose.yml” per a entorn de desenvolupament
 > version: '3.3'
 > services:
 > #Definimos el servicio Web, en este caso Odoo
-> web:
-> #Indicamos que imagen de Docker Hub utilizaremos
-> image: odoo:17
-> #Indicamos que depende de "db", por lo cual debe ser procesada primero "db"
-> depends_on:
->
-> db
-# Port Mapping: indicamos que el puerto 8069 del contenedor se mapeara con el
-mismo puerto en el anfritrion
-# Permitiendo acceder a Odoo mediante http://localhost:8069
-ports:
-- 8069:8069
-# Mapeamos el directorio de los contenedores (como por
-ejemplo"/mnt/extra-addons" )
-# en un directorio local (como por ejemplo en un directorio
-"./volumesOdoo/addons")
-# situado en el lugar donde ejecutemos "Docker compose"
-volumes:
-- ./volumesOdoo/addons:/mnt/extra-addons
-- ./volumesOdoo/odoo/filestore:/var/lib/odoo/filestore
-- ./volumesOdoo/odoo/sessions:/var/lib/odoo/sessions
-# Definimos variables de entorno de Odoo
-environment:
-- HOST=db
-- USER=odoo
-- PASSWORD=odoo
-# Indica que pasa ese parametro al arrancar el servicio Odoo
-command: --dev=all
-#Definimos el servicio de la base de datos
-db:
-image: postgres:15
-# Definimos variables de entorno de PostgreSQL
-environment:
-- POSTGRES_PASSWORD=odoo
-- POSTGRES_USER=odoo
-- POSTGRES_DB=postgres
-# Mapeamos el directorio del contenedor "var/lib/postgresql/data" en un
-directorio "./volumesOdoo/dataPostgreSQL"
-# situado en el lugar donde ejecutemos "Docker compose"
-volumes:
-- ./volumesOdoo/dataPostgreSQL:/var/lib/postgresql/data
-> 
+  > web:
+    > #Indicamos que imagen de Docker Hub utilizaremos
+    > image: odoo:17
+    > #Indicamos que depende de "db", por lo cual debe ser procesada primero "db"
+    > depends_on:
+    >- db
+    > # Port Mapping: indicamos que el puerto 8069 del contenedor se mapeara con el mismo puerto en el anfritrion
+    > # Permitiendo acceder a Odoo mediante http://localhost:8069
+    >ports:
+    >- 8069:8069
+    ># Mapeamos el directorio de los contenedores (como por ejemplo"/mnt/extra-addons" )en un directorio local (como por ejemplo en un directorio "./volumesOdoo/addons") situado en el lugar donde ejecutemos "Docker compose"
+    >volumes:
+    >- ./volumesOdoo/addons:/mnt/extra-addons
+    >- ./volumesOdoo/odoo/filestore:/var/lib/odoo/filestore
+    >- ./volumesOdoo/odoo/sessions:/var/lib/odoo/sessions
+    ># Definimos variables de entorno de Odoo
+    >environment:
+    >- HOST=db
+    >- USER=odoo
+    >- PASSWORD=odoo
+    ># Indica que pasa ese parametro al arrancar el servicio Odoo
+    >command: --dev=all
+  >#Definimos el servicio de la base de datos
+  >db:
+    >image: postgres:15
+    ># Definimos variables de entorno de PostgreSQL
+    >environment:
+    >- POSTGRES_PASSWORD=odoo
+    >- POSTGRES_USER=odoo
+    >- POSTGRES_DB=postgres
+    ># Mapeamos el directorio del contenedor "var/lib/postgresql/data" en un directorio "./volumesOdoo/dataPostgreSQL" situado en el lugar donde ejecutemos Docker compose"
+    >volumes:
+    >- ./volumesOdoo/dataPostgreSQL:/var/lib/postgresql/data
 
+## 6. POSADA EN MARXA D'ODOO 17
+
+Una vegada realitzada la instal·lació amb qualsevol de les alternatives proposades anteriorment,accedirem mitjançant el nostre navegador a Odoo amb l’URL [http://localhost:8069](http://localhost:8069) i haurem de realitzar una configuració inicial. Ací un exemple d’aquesta configuració:
+![Configuració inicial d'Odoo](assets/imatges/odoo_configuracio.png)
+
+A primera vista, se’ns mostrarà un “Password mestre” que podem canviar si volem. **Haurem d’emmagatzemar eixe “Password” a un lloc segur** per poder recuperar el nostre sistema davant problemes amb el nostre usuari.
+
+> ❕ **Atenció**: si perdem el “Password mestre”, podem ficar-lo en blanc editant “/etc/odoo/odoo.conf” (o el fitxer “.odoorc” dins de l'“home”) i eliminat (o posar un comentari amb #) el camp “admin_password”. Si ho fem així i reiniciem el servei, Odoo ens dirà que no hi ha “Password mestre” i ens suggerirà que creem un nou password
+
+A més, se’ns demanara configurar Odoo segons els paràmetres de la nostra instal·lació. En aquesta configuració crearem un usuari administrador, e indicarem el nostre país (això realitzarà algunes adaptacions per a empreses locals) e idioma d’Odoo. Inclús ens permet carregar la instal·lació amb dades de demostració (útils per fer proves, conéixer com funciona Odoo, etc.).
+Una vegada estiga tot llest, en polsar “Create database” s’inicialitzarà Odoo. Tingueu paciència (tarda uns minuts). Si tor ha anat bé, arribareu a una pantalla similar a la següent:
+![Odoo inicial](assets/imatges/odoo_inicial.png)
