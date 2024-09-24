@@ -365,7 +365,7 @@ el contingut del fitxer “docker-compose.yml” per a entorn de desenvolupament
 
 **Fitxer “docker-compose.yml” (desenvolupament)**:
 
- version: '3.3'
+>version: '3.3'
  services:
  \# Definimos el servicio Web, en este caso Odoo
    web:
