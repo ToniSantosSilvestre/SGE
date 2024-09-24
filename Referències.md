@@ -18,6 +18,7 @@ Els manuals que proposem a continuació, pertanyen a l’última versió creada 
 - Manuals oficials d’usuari d’Odoo en castellà: [https://www.odoo.com/documentation/17.0/es/ ]https://www.odoo.com/documentation/17.0/es/
 - Manual d’instal·lació d’Odoo: [https://www.odoo.com/documentation/17.0/administration.html]https://www.odoo.com/documentation/17.0/administration.html
 - Curs de l'IOC sobre Sistemes de Gestió Empresarial: [https://ioc.xtec.cat/materials/FP/Recursos/fp_dam_m10_/web/fp_dam_m10_htmlindex/index.html]https://ioc.xtec.cat/materials/FP/Recursos/fp_dam_m10_/web/fp_dam_m10_htmlindex/index.html
+- [Repositori de l'assignatura d'SGE](https://github.com/sergarb1/ApuntesSistemasGestionEmpresarial) de Sergi Garcia Barea i Jose Castillo  
 
 # Bibliografia complementària
 
