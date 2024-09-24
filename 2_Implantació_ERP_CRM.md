@@ -367,17 +367,17 @@ el contingut del fitxer “docker-compose.yml” per a entorn de desenvolupament
 
  version: '3.3'
  services:
- #Definimos el servicio Web, en este caso Odoo
+ \# Definimos el servicio Web, en este caso Odoo
    web:
-     #Indicamos que imagen de Docker Hub utilizaremos
+     \# Indicamos que imagen de Docker Hub utilizaremos
      image: odoo:17
-     #Indicamos que depende de "db", por lo cual debe ser procesada primero "db"
+     \# Indicamos que depende de "db", por lo cual debe ser procesada primero "db"
      depends_on:
-    - db
-     # Port Mapping: indicamos que el puerto 8069 del contenedor se mapeara con el mismo puerto en el anfritrion
-     # Permitiendo acceder a Odoo mediante http://localhost:8069
+    \- db
+     \# Port Mapping: indicamos que el puerto 8069 del contenedor se mapeara con el mismo puerto en el anfritrion
+     \# Permitiendo acceder a Odoo mediante http://localhost:8069
     ports:
-    - 8069:8069
+    \- 8069:8069
     # Mapeamos el directorio de los contenedores (como por ejemplo"/mnt/extra-addons" )en un directorio local (como por ejemplo en un directorio "./volumesOdoo/addons") situado en el lugar donde ejecutemos "Docker compose"
     volumes:
     - ./volumesOdoo/addons:/mnt/extra-addons
