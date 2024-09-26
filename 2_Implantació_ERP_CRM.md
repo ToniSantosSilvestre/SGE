@@ -38,8 +38,7 @@ d'aquesta evolució:
 ### 1.2 Sistemes ERP-CRM en la mateixa empresa
 
   L'opció de tenir un servidor en la mateixa empresa té un seguit d'avantatges i inconvenients (relacionats entre si) i els principals problemes venen donats tant pels costos econòmics com per la seguretat de les dades.
-  Tenir un servidor a la mateixa empresa amb un sistema ERP-CRM (o amb qualsevol altre tipus de
-  servei) suposa alguns reptes:
+  Tenir un servidor a la mateixa empresa amb un sistema ERP-CRM (o amb qualsevol altre tipus de  servei) suposa alguns reptes:
 
 - Posar en marxa un servei requereix una inversió inicial en maquinari.
 
@@ -88,8 +87,7 @@ Tot i això, l'ús de "serveis en el núvol" posseeixen diversos inconvenients:
 ### 1.5 I el programari per al nostre sistema ERP?
 Durant la introducció hem parlat de costos relacionats amb el sistema que allotjaria el nostre ERP.
 Però ... I el programari? Hi ha multitud d'opcions programari ERP, tan gratuïts, de pagament, lliures, mixtes (parts lliures, parts de pagament), etc.
-Hi ha un programari ERP anomenat Odoo, que es presenta en dues versions: "Community Edition"
-(programari lliure i gratuït) i "Enterprise Edition" (de pagament).
+Hi ha un programari ERP anomenat Odoo, que es presenta en dues versions: "Community Edition" (programari lliure i gratuït) i "Enterprise Edition" (de pagament).
 En aquest curs utilitzarem Odoo "Community Edition", ja que és lliure i gratuït. Per simplicitat,
 quan ens referim a Odoo, estarem referint-nos a aquesta versió.
 Més informació a https://www.odoo.com/es_ES/ i https://github.com/odoo/odoo.
@@ -152,12 +150,11 @@ compte i exigir-les en una instal·lació real. Algunes de les mesures de protec
 xarxa elèctrica.
 - És recomanable que el servidor en si dispose d'elements (processador, RAM, discs, etc.) per
   sobre de la potència mínima necessària perquè funcione el sistema ERP.
-    - No cal passar-se massa, ja que si ho fem incrementarem tan despeses de maquinari i el consum elèctric sense obtenir un gran benefici. Normalment, aquests programes tenen una documentació en la qual descriuen els requisits mínims.💬 Interessant: si coneixes com usar "Docker", pots ser-te molt útil revisar aquest curs amb
-  exemples pràctics https://sergarb1.github.io/CursoIntroduccionADocker
+    - No cal passar-se massa, ja que si ho fem incrementarem tan despeses de maquinari i el consum elèctric sense obtenir un gran benefici. Normalment, aquests programes tenen una documentació en la qual descriuen els requisits mínims.💬 Interessant: si coneixes com usar "Docker", pots ser-te molt útil revisar aquest curs amb exemples pràctics https://sergarb1.github.io/CursoIntroduccionADocker
   💬 Interessant: si ja coneixes com usar "Docker", pots ser-te molt útil "CheatSheet"
   https://raw.githubusercontent.com/sergarb1/CursoIntroduccionADocker/main/FuentesCurso/Docker%20CheatSheet%20COMPLETA.pdf
   Per posar en marxa Odoo 17 en mode producció crearem dos contenidors:
-  ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 14.
+  ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 15.
   ● El segon contenidor contindrà el servidor Odoo.
   Creem el contenidor de PostgreSQL amb:
   docker run -d -v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data -e
@@ -168,18 +165,13 @@ xarxa elèctrica.
   ● “-v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data”: munta el directori
   del contenidor "/var/lib/postgresql/data" (on es troba la informació emmagatzemada per
   PostgreSQL) al directori de l'amfitrió "/home/usuari/OdooDesarrollo/dataPG".
-  ○ La fi d'això és emmagatzemar la informació de la base de dades en la màquina
-  amfitrió.
+  ○ La fi d'això és emmagatzemar la informació de la base de dades en la màquina amfitrió.
   ● “-e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres”:
-  estableix dins el contenidor aquestes variables d'entorn. A efectes pràctics, aquestes
-  variables li indiquen que creuen en la base de dades un usuari "Odoo" i la contrasenya
-  "Odoo" i que la base de dades a utilitzar es diu "postgres".
+  estableix dins el contenidor aquestes variables d'entorn. A efectes pràctics, aquestes variables li indiquen que creuen en la base de dades un usuari "Odoo" i la contrasenya "Odoo" i que la base de dades a utilitzar es diu "postgres".
   ● "--name db": nom que li donarem al nostre contenidor Docker.
-  ● "postgres:15": indiquem que farem servir la imatge de Docker Hub anomenada "postgres" i
-  d'entre elles farem servir la versió 15.
+  ● "postgres:15": indiquem que farem servir la imatge de Docker Hub anomenada "postgres" i d'entre elles farem servir la versió 15.
   ○ Més informació d'aquesta imatge en https://hub.docker.com/_/postgres
-  📖 Important: si en lloc del paràmetre "-d", utilitzem el paràmetre "-t", executarem el
-  contenidor en primer pla i veurem a la terminal informació de l'inici de PostgreSQL o Odoo.
+  📖 Important: si en lloc del paràmetre "-d", utilitzem el paràmetre "-t", executarem el contenidor en primer pla i veurem a la terminal informació de l'inici de PostgreSQL o Odoo.
   Això és interessant per detectar problemes.
   Amb el contenidor PostgreSQL ja en marxa, vam crear el contenidor amb Odoo amb:
   docker run -d -v /home/usuario/odoo/addons:/mnt/extra-addons -p 8069:8069 --name
@@ -189,12 +181,10 @@ xarxa elèctrica.
   ● "-p 8069:8069": mapeamos el port 8069 del contenidor (on accedim a Odoo) al port 8069 de
   la màquina amfitrió, per poder accedir a Odoo amb http://localhost: 8069
   ● "--name odooprod": donem el nom "odooprod" al nostre contenidor
-- Respecte a la seguretat de les dades, es recomana redundància en els discos, siga amb RAID
-  o amb sistemes d'arxius redundants com ZFS o Btrfs
+  Respecte a la seguretat de les dades, es recomana redundància en els discos, siga amb RAID  o amb sistemes d'arxius redundants com ZFS o Btrfs
     - Aquesta redundància no exclou la necessitat d'establir una política de còpies de seguretat externes al sistema.
 
-Un cop posat en marxa el servidor cal triar el sistema operatiu base i un possible sistema de
-virtualització. En el cas de sistema ERP Odoo, que tractem en aquests apunts, per a una posada en marxa en un sistema real es recomana Ubuntu Server.
+Una vegada posat en marxa el servidor cal triar el sistema operatiu base i un possible sistema de virtualització. En el cas de sistema ERP Odoo, que tractem en aquests apunts, per a una posada en marxa en un sistema real es recomana Ubuntu Server.
 Aquest sistema operatiu pot ser el sistema instal·lat a la màquina o estar virtualitzat. 
 
 La virtualització podem realitzar-la amb:
@@ -216,8 +206,7 @@ problemes en qualsevol ordinador amb diversos nuclis i almenys 512 MB de RAM, en
 Com en totes les aplicacions que consulten bases de dades, l'accés al disc pot suposar un coll
 d'ampolla. Per això és recomanable utilitzar unitats SSD, RAIDs o sistemes d'arxius com ZFS o Btrfs amb diversos discos.
 
-Odoo 17 funciona perfectament en màquines virtuals i contenidors. Algunes opcions de
-configuració poden ser:
+Odoo 17 funciona perfectament en màquines virtuals i contenidors. Algunes opcions de configuració poden ser:
 - Sistema operatiu: Ubuntu Server i instal·lació directa d'Odoo.
 - Sistema operatiu: Ubuntu Server, Virtualització amb KVM o similar. Les màquines virtuals
 tindran instal·lat Ubuntu Server.
@@ -235,7 +224,11 @@ https://www.odoo.com/documentation/17.0/administration/on_premise.html
 >❕ **Atenció**: no és l'opció recomanada per a cursar aquest ,mòdul. La opció recomanada es
 utilitzar **“Docker Compose”**.
 
-### 5.3. Odoo 17 amb Docker:  Part 1: Contenidor Odoo en producció
+### 5.3. Opció 2: Instal·lació en entorn de núvol a AWS Academy Learner Lab
+
+A l'hora de fer la instal·lació, cal emprar el Learner Lab d'AWS Academy "2nDAM SGE" per implementar  una instal·lació en model IaaS/PaaS a màquines EC2 seguint les instruccions exposades a l'apartat anterior.
+
+### 5.4. Odoo 17 amb Docker:  Part 1: Contenidor Odoo en producció
 
 >💬 **Interessant**: si coneixes com usar "Docker", pots ser-te molt útil revisar aquest curs amb
 >exemples pràctics https://sergarb1.github.io/CursoIntroduccionADocker
@@ -280,7 +273,7 @@ Amb el contenidor PostgreSQL ja en marxa, vam crear el contenidor amb Odoo amb:
 
 - “--link db:db”: enllacem amb una xarxa virtual aquest contenidor amb el contenidor "db".
 
-### 5.4. Odoo 17 en Docker: - Part 2: Contenidor Odoo per a desenvolupament
+### 5.5. Odoo 17 en Docker: - Part 2: Contenidor Odoo per a desenvolupament
 
 Per llançar Odoo a un contenidor preparat per a desenvolupament, crearem també dos contenidors.
 
@@ -328,7 +321,7 @@ Amb això, tindrem llest el nostre entorn de desenvolupament “Dockeritzat”. 
 contenidors corren de manera aïllada els serveis de base de dades i Odoo, mentre que nosaltres
 podrem desenvolupar utilitzant un IDE instal·lat en l’amfitrió treballant dins del directori “**/home/usuario/OdooDesarrollo/addons**”.
 
-### 5.5. Odoo 17 en Docker: - Part 3: Docker Compose per a Odoo - OPCIÓ RECOMANADA
+### 5.6. Odoo 17 en Docker: - Part 3: Docker Compose per a Odoo - OPCIÓ RECOMANADA
 >  💬 Interessant: si no coneixes com utilitzar “Docker Compose”, pot ser-te molt útil revisar aquest curs amb exemples pràctics https://sergarb1.github.io/CursoIntroduccionADocker/
 
 > 💬 Interessant: si ja coneixes com utilitzar “Docker Compose”, pots fer ús de https://raw.githubusercontent.com/sergarb1/CursoIntroduccionADocker/main/FuentesCurso/Docker%20CheatSheet%20COMPLETA.pdf
@@ -434,3 +427,11 @@ A més, se’ns demanara configurar Odoo segons els paràmetres de la nostra ins
 Una vegada estiga tot llest, en polsar “Create database” s’inicialitzarà Odoo. Tingueu paciència (tarda uns minuts). Si tor ha anat bé, arribareu a una pantalla similar a la següent:
 
 ![Odoo inicial](assets/imatges/odoo_inicial.png)
+
+## ACTIVITATS
+** ACTIVITAT 01 **
+Fes un document on es demostre que has realitzat amb èxit la instal·lació d’Odoo de les següents maneres:
+- Instal·lació i posada en marxa de zero en un sistema Ubuntu. Odoo pot estar en mode “producció” o mode “desenvolupament”.
+    - Pot ser una màquina virtual amb hipervisor o en un contenidor Docker i una implementació en AWS Academy.
+- Posada en marxa utilitzant la imatge de Docker Hub d’Odoo i utilitzant comandaments Docker. En aquest context volem tant la versió per a producció com per a desenvolupament.
+- Posada en marxa utilitzant la imatge de Docker Hub d’Odoo i utilitzant Docker Compose. En aquest context volem tant la versió per a producció com per a desenvolupament.
