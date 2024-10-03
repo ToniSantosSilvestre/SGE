@@ -431,7 +431,8 @@ Una vegada estiga tot llest, en polsar “Create database” s’inicialitzarà 
 ## ACTIVITATS
 ** ACTIVITAT 01 **
 Fes un document on es demostre que has realitzat amb èxit la instal·lació d’Odoo de les següents maneres:
-- Instal·lació i posada en marxa de zero en un sistema Ubuntu. Odoo pot estar en mode “producció” o mode “desenvolupament”.
-    - Pot ser una màquina virtual amb hipervisor o en un contenidor Docker i una implementació en AWS Academy.
+- Instal·lació i posada en marxa de zero en un sistema Ubuntu. Odoo pot estar en mode “producció” o mode “desenvolupament” tot instal·lant el mòdul de Vendes. Cal personalitzar el nom de l'usuari amb l'inicial i primer cognom i aportar les captures més rellevants del procediment d'instal·lació
+    - Pot ser una màquina virtual amb hipervisor o en un contenidor Docker.
+- Instal·lació i posada en marxa de zero en un sistema Windows al núvol. Odoo pot estar en mode “producció” o mode “desenvolupament” tot instal·lant el mòdul de "Lloc web". Cal personalitzar el nom de l'usuari amb l'inicial i primer cognom i aportar les captures més rellevants del procediment d'instal·lació
 - Posada en marxa utilitzant la imatge de Docker Hub d’Odoo i utilitzant comandaments Docker. En aquest context volem tant la versió per a producció com per a desenvolupament.
 - Posada en marxa utilitzant la imatge de Docker Hub d’Odoo i utilitzant Docker Compose. En aquest context volem tant la versió per a producció com per a desenvolupament.
