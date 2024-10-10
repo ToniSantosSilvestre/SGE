@@ -153,28 +153,26 @@ xarxa elèctrica.
   💬 Interessant: si ja coneixes com usar "Docker", pots ser-te molt útil "CheatSheet"
   https://raw.githubusercontent.com/sergarb1/CursoIntroduccionADocker/main/FuentesCurso/Docker%20CheatSheet%20COMPLETA.pdf
   Per posar en marxa Odoo 17 en mode producció crearem dos contenidors:
-  ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 15.
-  ● El segon contenidor contindrà el servidor Odoo.
-  Creem el contenidor de PostgreSQL amb:
-  docker run -d -v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data -e
-  POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db
-  postgres:15
-  On els paràmetres indiquen el següent:
-  ● "-d": executa el contenidor en segon pla.
-  ● “-v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data”: munta el directori del contenidor "/var/lib/postgresql/data" (on es troba la informació emmagatzemada per PostgreSQL) al directori de l'amfitrió "/home/usuari/OdooDesarrollo/dataPG".
-  ○ La fi d'això és emmagatzemar la informació de la base de dades en la màquina amfitrió.
-  ● “-e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres”: estableix dins el contenidor aquestes variables d'entorn. A efectes pràctics, aquestes variables li indiquen que creuen en la base de dades un usuari "Odoo" i la contrasenya "Odoo" i que la base de dades a utilitzar es diu "postgres".
-  ● "--name db": nom que li donarem al nostre contenidor Docker.
-  ● "postgres:15": indiquem que farem servir la imatge de Docker Hub anomenada "postgres" i d'entre elles farem servir la versió 15.
-  ○ Més informació d'aquesta imatge en https://hub.docker.com/_/postgres
+    ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 15.
+    ● El segon contenidor contindrà el servidor Odoo.
+    Creem el contenidor de PostgreSQL amb:
+        docker run -d -v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db   postgres:15
+      On els paràmetres indiquen el següent:
+      ● "-d": executa el contenidor en segon pla.
+      ● “-v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data”: munta el directori del contenidor "/var/lib/postgresql/data" (on es troba la informació emmagatzemada per PostgreSQL) al directori de l'amfitrió "/home/usuari/OdooDesarrollo/dataPG".
+          ○ La fi d'això és emmagatzemar la informació de la base de dades en la màquina amfitrió.
+      ● “-e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres”: estableix dins el contenidor aquestes variables d'entorn. A efectes pràctics, aquestes variables li indiquen que creuen en la base de dades un usuari "Odoo" i la contrasenya "Odoo" i que la base de dades a utilitzar es diu "postgres".
+      ● "--name db": nom que li donarem al nostre contenidor Docker.
+      ● "postgres:15": indiquem que farem servir la imatge de Docker Hub anomenada "postgres" i d'entre elles farem servir la versió 15.
+          ○ Més informació d'aquesta imatge en https://hub.docker.com/_/postgres
   📖 Important: si en lloc del paràmetre "-d", utilitzem el paràmetre "-t", executarem el contenidor en primer pla i veurem a la terminal informació de l'inici de PostgreSQL o Odoo.
   Això és interessant per detectar problemes.
   Amb el contenidor PostgreSQL ja en marxa, vam crear el contenidor amb Odoo amb:
   docker run -d -v /home/usuario/odoo/addons:/mnt/extra-addons -p 8069:8069 --name odooprod --user root --link db:db odoo:17
   On els paràmetres indiquen el següent:
-  ● "-d": executa el contenidor en segon pla.
-  ● "-p 8069:8069": mapeamos el port 8069 del contenidor (on accedim a Odoo) al port 8069 de la màquina amfitrió, per poder accedir a Odoo amb http://localhost: 8069
-  ● "--name odooprod": donem el nom "odooprod" al nostre contenidor
+      ● "-d": executa el contenidor en segon pla.
+      ● "-p 8069:8069": mapeamos el port 8069 del contenidor (on accedim a Odoo) al port 8069 de la màquina amfitrió, per poder accedir a Odoo amb http://localhost: 8069
+      ● "--name odooprod": donem el nom "odooprod" al nostre contenidor
   Respecte a la seguretat de les dades, es recomana redundància en els discos, siga amb RAID  o amb sistemes d'arxius redundants com ZFS o Btrfs
     - Aquesta redundància no exclou la necessitat d'establir una política de còpies de seguretat externes al sistema.
 
@@ -231,14 +229,13 @@ Creem el contenidor de PostgreSQL amb:
 >docker run -d -v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:15
 
 On els paràmetres indiquen el següent:
-● "**-d**": executa el contenidor en segon pla.
-● “**-v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data**”: munta el directori
+    ● "**-d**": executa el contenidor en segon pla.
+    ● “**-v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data**”: munta el directori
 del contenidor "/var/lib/postgresql/data" (on es troba la informació emmagatzemada per PostgreSQL) al directori de l'amfitrió "/home/usuari/OdooDesarrollo/dataPG".La fi d'això és emmagatzemar la informació de la base de dades en la màquina
 amfitrió.
-● “**-e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres**”:
-estableix dins el contenidor aquestes variables d'entorn. A efectes pràctics, aquestes variables li indiquen que creuen en la base de dades un usuari "Odoo" i la contrasenya "Odoo" i que la base de dades a utilitzar es diu "postgres".
-● "**--name db**": nom que li donarem al nostre contenidor Docker.
-● "**postgres:15**": indiquem que farem servir la imatge de Docker Hub anomenada "postgres" i d'entre elles farem servir la versió 15.
+    ● “**-e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres**”: estableix dins el contenidor aquestes variables d'entorn. A efectes pràctics, aquestes variables li indiquen que creuen en la base de dades un usuari "Odoo" i la contrasenya "Odoo" i que la base de dades a utilitzar es diu "postgres".
+    ● "**--name db**": nom que li donarem al nostre contenidor Docker.
+    ● "**postgres:15**": indiquem que farem servir la imatge de Docker Hub anomenada "postgres" i d'entre elles farem servir la versió 15.
     - Més informació d'aquesta imatge en https://hub.docker.com/_/postgres
 
 > 📖 Important: si en lloc del paràmetre "-d", utilitzem el paràmetre "-t", executarem el contenidor en primer pla i veurem a la terminal informació de l'inici de PostgreSQL o Odoo. Això és interessant per detectar problemes.
@@ -247,17 +244,12 @@ Amb el contenidor PostgreSQL ja en marxa, vam crear el contenidor amb Odoo amb:
 > docker run -d -v /home/usuario/odoo/addons:/mnt/extra-addons -p 8069:8069 --name odooprod --user root --link db:db odoo:17
 
  On els paràmetres indiquen el següent:
-- "**-d**": executa el contenidor en segon pla.
-
-- "**-p 8069:8069**": mapeamos el port 8069 del contenidor (on accedim a Odoo) al port 8069 de
-  la màquina amfitrió, per poder accedir a Odoo amb http://localhost: 8069
-
-- "**--name odooprod**": donem el nom "odooprod" al nostre contenidor
-
--  “--user=”root””: força que el contenidor s'execute internament com "root" i no com l'usuari
+     - "**-d**": executa el contenidor en segon pla.
+     - "**-p 8069:8069**": mapeamos el port 8069 del contenidor (on accedim a Odoo) al port 8069 de la màquina amfitrió, per poder accedir a Odoo amb http://localhost: 8069
+     - "**--name odooprod**": donem el nom "odooprod" al nostre contenidor
+     -  “--user=”root””: força que el contenidor s'execute internament com "root" i no com l'usuari
   "Odoo" que va per defecte en la imatge.
-
-- “--link db:db”: enllacem amb una xarxa virtual aquest contenidor amb el contenidor "db".
+     - “--link db:db”: enllacem amb una xarxa virtual aquest contenidor amb el contenidor "db".
 
 ### 5.5. Odoo 17 en Docker: - Part 2: Contenidor Odoo per a desenvolupament
 
@@ -279,19 +271,15 @@ Crearem el contenidor d’Odoo, amb algunes diferències respecte a l’anterior
 > docker run -d -v /home/usuario/OdooDesarrollo/volumesOdoo/addons:/mnt/extra-addons -v /home/usuario/OdooDesarrollo/volumesOdoo/firestore:/var/lib/odoo/filestore -v /home/usuario/OdooDesarrollo/volumesOdoo/sessions:/var/lib/odoo/sessions -p 8069:8069 --name odoodev --user="root" --link db:db -t odoo:17 --dev=all
 
 A continuació, comentem les diferències:
-- “**-v /home/usuario/OdooDesarrollo/addons:/mnt/extra-addons**”: la imatge d’Odoo 17 per defecte carrega els mòduls al directori del contenidor “/mnt/extra-addons”, per això mapegem eixe directori al nostre directori de la màquina amfitrió “/home/usuario/OdooDesarrollo/addons”, on desenvoluparem utilitzant un IDE extern.
-  ● “**-v /home/usuario/OdooDesarrollo/volumesOdoo/firestore:/var/lib/odoo/filestore**
-  ● ” **-v /home/usuario/OdooDesarrollo/volumesOdoo/sessions:/var/lib/odoo/sessions**”: com en desenvolupament és possible que parem i muntem moltes vegades els contenidors Docker, muntem aquests volums per tindre persistència dels directoris d’Odoo “firestore” i “sessions”. Per a ell, mapejarems eixos directoris del contenidor a la nostra màquina amfitrió dins del directori “/home/usuario/OdooDesarrollo/volumesOdoo/”.
-  ● “ **--dev=all**”: li passa aquest paràmetre a Odoo per facilitar tasques de desenvolupament.
+    - “**-v /home/usuario/OdooDesarrollo/addons:/mnt/extra-addons**”: la imatge d’Odoo 17 per defecte carrega els mòduls al directori del contenidor “/mnt/extra-addons”, per això mapegem eixe directori al nostre directori de la màquina amfitrió “/home/usuario/OdooDesarrollo/addons”, on desenvoluparem utilitzant un IDE extern.
+    ● “**-v /home/usuario/OdooDesarrollo/volumesOdoo/firestore:/var/lib/odoo/filestore**
+    ● ” **-v /home/usuario/OdooDesarrollo/volumesOdoo/sessions:/var/lib/odoo/sessions**”: com en desenvolupament és possible que parem i muntem moltes vegades els contenidors Docker, muntem aquests volums per tindre persistència dels directoris d’Odoo “firestore” i “sessions”. Per a ell, mapejarem eixos directoris del contenidor a la nostra màquina amfitrió dins del directori “/home/usuario/OdooDesarrollo/volumesOdoo/”.
+    ● “ **--dev=all**”: li passa aquest paràmetre a Odoo per facilitar tasques de desenvolupament.
   
   - El detall de què realitza aquesta opció es pot observar al següent enllaç
     https://www.odoo.com/documentation/17.0/es/developer/reference/cli.html
   
-  
-  
   > ❕ Atenció: per a poder desenvolupar sense problemes, és recomanable donar tots els permisos al directori ”/home/usuario/OdooDesarrollo/volumesOdoo/addons”, amb un comandament similar a “**sudo chmod -R 777 /home/usuario/volumesOdoo/addons**”.
-
-
 
 Amb això, tindrem llest el nostre entorn de desenvolupament “Dockeritzat”. Hem aconseguit que els contenidors corren de manera aïllada els serveis de base de dades i Odoo, mentre que nosaltres podrem desenvolupar utilitzant un IDE instal·lat en l’amfitrió treballant dins del directori “**/home/usuario/OdooDesarrollo/addons**”.
 
@@ -420,11 +408,12 @@ Les captures a aportar són les següents:
     - Instal·lació dels mòduls requerits (Vendes, Lloc web)
     - Algun pas addicional que siga considerable afegir (ex: bug d'Odoo 17 en Ubuntu)
 
-### Activitats d'ampliació
-1. Realitza una instal·lació multicapa emprant màquines virtuals amb hipervisor o en el núvol de manera que el sistema gestor de base de dades estiga en una màquina diferenciada de la que conté l'aplicatiu d'Odoo.
+** ACTIVITAT 02 **
+Realitza una instal·lació multicapa emprant màquines virtuals amb hipervisor o en el núvol de manera que el sistema gestor de base de dades estiga en una màquina diferenciada de la que conté l'aplicatiu d'Odoo.
 **Advertència**: Cal modificar la referència al sistema gestor de base de dades en el fitxer de configuració d'Odoo (/etc/odoo/odoo.conf)
 
-2. Realitza la mateixa tasca emprant el servei RDS d'AWS.
+** ACTIVITAT 03 **
+Realitza la mateixa tasca emprant el servei RDS d'AWS.
 
 
 
