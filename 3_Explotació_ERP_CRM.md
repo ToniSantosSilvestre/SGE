@@ -199,3 +199,11 @@ Un punt molt important a tenir en compte en la gestió de privilegis de PostgreS
 -  PostgreSQL facilita, a totes les bases de dades, l’esquema `public`, propietat de l’usuari que ha creat la base de dades, i amb privilegis d’utilització de l’esquema (`usage`) i creació d’objectes (`create`) al rol `public` (és a dir, a qualsevol usuari). Així, si observem la propietat ACL de l’esquema `public` d’una base de dades creada per l’usuari `odoo`, veiem el valor `{odoo=UC/odoo, ``=UC``/``odoo}` que hem de llegir com: l’usuari `odoo` té privilegis `UC` (`usage+create`) i el rol `public` (no apareix a l’esquerra del símbol =) té privilegis `UC` (`usage+create`) i que en ambdós casos han estat concedits per l’usuari `odoo` (valor que apareix després del símbol `/`).
 
 ![Esquema públic d'ACL](assets/imatges/03_16_acl_esquema_public.png "Esquema públic d'ACL")
+
+Un usuari qualsevol, pel fet de pertànyer al rol `public`, té accés `UC` sobre l’esquema `public` de qualsevol base de dades. Això implica que pot veure la relació  (noms) de tots els objectes existents a l’esquema (taules, vistes…),  veure la descripció de qualsevol objecte (taules, vistes…) i crear nous  objectes dins l’esquema, però no pot accedir als continguts de les  taules ni vistes, excepte si el propietari d’aquests objectes li  concedix accés. 
+
+En cas que hàgem de facilitar accés a la base de dades corresponent a una empresa de PostgreSQL a **nous usuaris** i no ens interesse mantindre aquesta situació, hem de fer el següent:
+
+-  Definirem el valor de la propietat ACL de la base de dades i indicarem els usuaris als quals es facilita el privilegi de connexió.
+-  Modificarem el valor de la propietat ACL de l’esquema `public`, eliminarem l’assignació de privilegis al rol `public` i assignarem la utilització (només `usage`) de l’esquema `public` als usuaris o rols corresponents. Aquesta acció executada mentre el  servidor està engegat pot provocar que Odoo no puga connectar amb la  base de dades fins que es reinicie el servidor.
+-  Assignarem els privilegis  (normalment de lectura) als usuaris o rols corresponents sobre els  objectes (taules, vistes, columnes…) que interesse. 
