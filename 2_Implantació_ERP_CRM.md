@@ -410,7 +410,7 @@ Les captures a aportar són les següents:
 
 ** ACTIVITAT 02 **
 Realitza una instal·lació multicapa emprant màquines virtuals amb hipervisor o en el núvol de manera que el sistema gestor de base de dades estiga en una màquina diferenciada de la que conté l'aplicatiu d'Odoo.
-**Advertència**: Cal modificar la referència al sistema gestor de base de dades en el fitxer de configuració d'Odoo (/etc/odoo/odoo.conf)
+**Advertència**: Cal modificar la referència al sistema gestor de base de dades en el fitxer de configuració d'Odoo (/etc/odoo/odoo.conf) i reiniciar el servei
 
 ** ACTIVITAT 03 **
 Realitza la mateixa tasca emprant el servei RDS d'AWS.
