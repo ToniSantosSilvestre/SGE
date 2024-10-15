@@ -406,7 +406,7 @@ Les captures a aportar són les següents:
     - Pantalla inicial de l'aplicació Odoo
     - Configuració de l'usuari de l'aplicació
     - Instal·lació dels mòduls requerits (Vendes, Lloc web)
-    - Algun pas addicional que siga considerable afegir (ex: bug d'Odoo 17 en Ubuntu)
+    - Algun pas addicional que siga considerable afegir (ex: bug d'Odoo 17 en Ubuntu, problema de paquets trencats en la instal·lació del wkhtmltopdf)
 
 ** ACTIVITAT 02 **
 Realitza una instal·lació multicapa emprant màquines virtuals amb hipervisor o en el núvol de manera que el sistema gestor de base de dades estiga en una màquina diferenciada de la que conté l'aplicatiu d'Odoo.
