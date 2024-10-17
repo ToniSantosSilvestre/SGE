@@ -206,4 +206,32 @@ En cas que hàgem de facilitar accés a la base de dades corresponent a una empr
 
 -  Definirem el valor de la propietat ACL de la base de dades i indicarem els usuaris als quals es facilita el privilegi de connexió.
 -  Modificarem el valor de la propietat ACL de l’esquema `public`, eliminarem l’assignació de privilegis al rol `public` i assignarem la utilització (només `usage`) de l’esquema `public` als usuaris o rols corresponents. Aquesta acció executada mentre el  servidor està engegat pot provocar que Odoo no puga connectar amb la  base de dades fins que es reinicie el servidor.
--  Assignarem els privilegis  (normalment de lectura) als usuaris o rols corresponents sobre els  objectes (taules, vistes, columnes…) que interesse. 
+-  Assignarem els privilegis  (normalment de lectura) als usuaris o rols corresponents sobre els  objectes (taules, vistes, columnes…) que interesse.
+
+  ## ACTIVITATS
+
+1).- L’objectiu d’aquesta activitat és conèixer la BD PostgreSQL d’una empresa d’Odoo.
+
+a) Considereu una BD PostgreSQL corresponent a una empresa en la qual s’ha instal·lat el mòdul de gestió de compres (purchase). Interessa dissenyar una consulta SQL de BD que facilite els proveïdors (identificador i nom) per als quals tenim alguna comanda amb pressupost enviat, però pendent d’acceptació o rebuig, acompanyats de la referència i data de les comandes implicades.
+
+Identifiqueu les taules i columnes implicades en la consulta i dissenyeu la consulta en SQL.
+
+b) Considereu una BD PostgreSQL corresponent a una empresa en la qual s’ha instal·lat el mòdul de recursos humans (hr). Interessa dissenyar una consulta que facilite tots els treballadors de l’empresa (nom i cognoms, mòbil, adreça electrònica, departament i lloc de treball) que no tenen cap usuari d’Odoo assignat, és a dir, que no poden accedir a l’ERP.
+
+Esbrineu les taules i columnes implicades en la consulta i dissenyeu la consulta en SQL.
+
+2).- Escriviu la instrucció o seqüència d’instruccions SQL, en un SGBD PostgreSQL 1x.x, per aconseguir:
+
+a).- En una base de dades X on s’ha eliminat l’accés públic a l’esquema public i suposant que qui executarà les instruccions és un usuari superadministrador connectat al servidor PostgreSQL en el qual residex la base de dades **X**, crear un usuari de nom **batoi** amb contrasenya **batoi** que només tinga accés de lectura a totes les taules de la base de dades **X**.
+b).- En la base de dades d’una empresa d’Odoo amb el mòdul crm (Customer Relationship Management) instal·lat, obtenir la llista de descripcions dels tipus de reunions amb tercers.
+c).- En la base de dades d’una empresa d’Odoo amb el mòdul hr (Human Resources) instal·lat, obtenir el nom de tots els empleats de l’organització acompanyat de la corresponent nacionalitat.
+d).- En la base de dades d’una empresa d’Odoo amb el mòdul purchase (Purchase Management) instal·lat, obtenir la llista de tots els productes susceptibles de ser comprats, acompanyats cadascun amb els noms dels proveïdors que el subministren.
+
+3).- L’objectiu d’aquesta activitat és practicar l’accessibilitat de només lectura a la BD PostgreSQL d’una empresa d’Odoo.
+
+Considereu la següent situació:
+	- Servidor Odoo connectat a un servidor PostgreSQL.
+	- Base de dades de l’empresa amb cap privilegi sobre l’esquema public concedit al rol public i amb ACL {} en les propietats de la base de dades.
+
+a).- Escriviu la seqüència d’instruccions de PostgreSQL que ha d’executar per un superusuari, per crear un usuari anomenat **becari**, amb el mínim conjunt de privilegis que li permeta la lectura sobre totes les taules de l’esquema públic de la base de dades.
+b).- Descriviu les accions que ha de portar a terme a pgAdmin un superusuari, per crear un grup d’usuaris anomenat **becaris**, amb el mínim conjunt de privilegis que els permeta la lectura sobre totes les taules de l’esquema public de la base de dades. Procediu a crear dos usuaris **Becari1** i **Becari2** en aquest grup.
