@@ -153,9 +153,9 @@ xarxa elèctrica.
   💬 Interessant: si ja coneixes com usar "Docker", pots ser-te molt útil "CheatSheet"
   https://raw.githubusercontent.com/sergarb1/CursoIntroduccionADocker/main/FuentesCurso/Docker%20CheatSheet%20COMPLETA.pdf
   Per posar en marxa Odoo 17 en mode producció crearem dos contenidors:
-    ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 15.
-    ● El segon contenidor contindrà el servidor Odoo.
-    Creem el contenidor de PostgreSQL amb:
+      ● El primer contenidor contindrà la base de dades PostgreSQL en la seua versió 15.
+      ● El segon contenidor contindrà el servidor Odoo.
+      Creem el contenidor de PostgreSQL amb:
         docker run -d -v /home/usuario/OdooDesarrollo/dataPG:/var/lib/postgresql/data -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db   postgres:15
       On els paràmetres indiquen el següent:
       ● "-d": executa el contenidor en segon pla.
@@ -275,10 +275,10 @@ A continuació, comentem les diferències:
     ● “**-v /home/usuario/OdooDesarrollo/volumesOdoo/firestore:/var/lib/odoo/filestore**
     ● ” **-v /home/usuario/OdooDesarrollo/volumesOdoo/sessions:/var/lib/odoo/sessions**”: com en desenvolupament és possible que parem i muntem moltes vegades els contenidors Docker, muntem aquests volums per tindre persistència dels directoris d’Odoo “firestore” i “sessions”. Per a ell, mapejarem eixos directoris del contenidor a la nostra màquina amfitrió dins del directori “/home/usuario/OdooDesarrollo/volumesOdoo/”.
     ● “ **--dev=all**”: li passa aquest paràmetre a Odoo per facilitar tasques de desenvolupament.
-  
+
   - El detall de què realitza aquesta opció es pot observar al següent enllaç
     https://www.odoo.com/documentation/17.0/es/developer/reference/cli.html
-  
+
   > ❕ Atenció: per a poder desenvolupar sense problemes, és recomanable donar tots els permisos al directori ”/home/usuario/OdooDesarrollo/volumesOdoo/addons”, amb un comandament similar a “**sudo chmod -R 777 /home/usuario/volumesOdoo/addons**”.
 
 Amb això, tindrem llest el nostre entorn de desenvolupament “Dockeritzat”. Hem aconseguit que els contenidors corren de manera aïllada els serveis de base de dades i Odoo, mentre que nosaltres podrem desenvolupar utilitzant un IDE instal·lat en l’amfitrió treballant dins del directori “**/home/usuario/OdooDesarrollo/addons**”.
@@ -386,6 +386,172 @@ Una vegada estiga tot llest, en polsar “Create database” s’inicialitzarà 
 
 ![Odoo inicial](assets/imatges/odoo_inicial.png)
 
+## 7. MÒDULS MÉS RELLEVANTS PER A L'ENTORN EMPRESARIAL
+
+A continuació es mostra una sèrie de menús que solen implementar les empreses per tal de gestionar el seu dia a dia. I entre ells els més importants són els següents:
+
+### 7.1 Mòdul de facturació
+Els primers elements que qualsevol empresa vol controlar en el seu negoci és la facturació. Per a això, haurem de buscar "facturació" i instal·lar aquest mòdul, com es veu en aquesta imatge:
+![Instal·lació del mòdul de facturació](assets/imatges/03_17_facturacio.png "Instal·lació del mòdul de facturació")
+
+Després de seguir els passos d'instal·lació i tenir una mica de paciència (els mòduls poden trigar a instal·lar-se), tindrem el mòdul instal·lat al nostre sistema.
+
+Una vegada instal·lat, si tornem a "Aplicacions" (menú "superior esquerra"), i en "Filtres" vam indicar "mòduls instal·lats", podrem observar que mòduls tenim instal·lats.
+
+En aquest cas, a més de facturació, ens ha instal·lat un altre mòdul addicional, "Converses", que necessita al mòdul "Facturació" per a funcionar. Aquesta acció passa habitualment, ja que hi ha molts mòduls amb interdependències.
+
+Ací un exemple de mòduls instal·lats després d'instal·lar "Facturació".
+![Vista del mòdul de facturació](assets/imatges/03_18_facturacio_instalat.png "Vista del mòdul de facturació")
+
+#### 7.1.1 Passos previs a l'ús del mòdul de facturació
+
+Abans d'usar el mòdul de "Facturació", val la pena fer / comprovar alguns xicotets ajustos. Per a això "Configuració" al menú "superior esquerre" i configurem algunes opcions.
+
+** Dades de l'empresa: (A "Configuració -> Opcions generals") **
+![Opcions generals de facturació](assets/imatges/03_19_facturacio_configuracio.png "Opcions generals de facturació")
+
+Ací podreu indicar informació de l'empresa. Entre ells destaca triar el nom de l'empresa o col·locar un logotip com observem en la següent imatge.
+![Opcions addicionals de configuració de facturació](assets/imatges/03_20_facturacio_configuracio_logotip.png "Opcions addicionals de configuració de facturació")
+
+**Localització fiscal: (A "Configuració -> Facturació / Comptabilitat"):**
+
+Ací podrem comprovar entre altres coses que la "Localització fiscal" i "Impostos per defecte" amb els quals treballarà Odoo són correctes. Per al nostre cas utilitzarem PIMES 2008 i 21% IVA.
+![Opcions de configuració de comptabilitat de facturació](assets/imatges/03_21_facturacio_configuracio_IVA.png "Opcions de configuració de comptabilitat de facturació")
+
+#### 7.1.2 Esbossos d'ús de la lliçó facturació
+
+Per treballar amb el mòdul facturació anirem a menú  "superior esquerre" i seleccionarem "Facturació / Comptabilitat".  Després d'això, en la part superior esquerra veurem el text "Facturació / Comptabilitat" i a la seua dreta immediata algunes seccions d'aquest  mòdul: "Clients" (operacions relacionades amb clients), "Proveïdors"  (Operacions relacionades amb proveïdors), "Informes" (generació  d'informes) i Configuració" (per configurar aspectes de la lliçó). A  baix d'aquestes, veurem un botó per crear factures
+![Menú de facturació](assets/imatges/03_22_facturacio_menu.png "Menú de facturació")
+
+
+En general, les operacions que hauria de realitzar Moe per operar en aquest mòdul serien:
+
+- Donar d'alta tant a clients com a proveïdors.
+  - Si una persona o entitat és alhora client i proveïdor, deu donar-se d'alta en les dues seccions.
+  - Per al cas d'empreses molt conegudes, Odoo té una base de dades que permet autocompletar dades d'aquestes empreses com a client o proveïdor.
+
+- Una vegada donades d'alta les entitats, es poden tant emetre factures (a clients) o emmagatzemar factures emeses per part d'un proveïdor.
+  - A més de registrar les factures, en el moment del pagament, haurem d’indicar-ho.
+
+
+Ací un exemple d'una factura emesa per una empresa, pendent de pagament.
+![Factura pendent de pagament](assets/imatges/03_23_facturacio_model_factura_pendent.png "Factura pendent de pagament")
+
+Ací un exemple d'una factura emesa per una empresa i pagada a proveïdor
+![Factura pagada a proveïdor](assets/imatges/03_24_facturacio_model_proveidor.png "Factura pagada a proveïdor")
+
+### 7.2 Mòdul d'empleats
+
+Una vegada que l'empresa ja té Odoo amb el mòdul de "Facturació", és convenient  poder gestionar aquests nous empleats, instal·larem el mòdul "Empleats".
+![Mòdul d'empleats](assets/imatges/03_25_empleats.png "Mòdul d'empleats")
+
+Una vegada instal·lat tot correctament, tindrem al menú "superior esquerre" una nova secció "Empleats", amb subseccions com "Empleats", "Directori d'empleats", "Departaments" i "Configuració".
+![Vista d'empleats](assets/imatges/03_26_empleats_vista.png "Vista d'empleats")
+
+Entre altres opcions, amb aquest mòdul podrem:
+
+- Donar d'alta/baixa a empleats.
+- Crear departaments i assignar empleats a aquests mateixos.
+
+A la següent imatge, podem veure un exemple on s'han configurat els departaments "Vendes" i "Administració" en el sistema.
+![Departaments d'empresa](assets/imatges/03_27_empleats_departaments.png "Departaments d'empresa")
+
+Ací un exemple on s'ha donat d'alta un usuari al departament de "Vendes", i un altre al departament dAdministració".
+![Alta de treballadors](assets/imatges/03_28_empleats_nous.png "Alta de treballadors")
+
+> 📖 Important:  en crear/editar l'empleat, si escau, podem crear-li i assignar un compte Odoo perquè puga accedir al sistema
+
+### 7.3 Mòdul de compra
+
+Un altre dels mòduls bàsics és el de "Compra" així que cal instal·lar-lo i configurar-lo de la següent forma.
+![Mòdul de compra](assets/imatges/03_29_compra.png "Mòdul de compra")
+
+Una vegada instal·lat tot correctament, tindrem al menú "superior esquerre" una nova secció "Compra", amb subseccions com "Comandes", "Productes", "Informes" i "Configuració".
+![Configuració de mòdul de compra](assets/imatges/03_30_compra_vista.png "Configuració de mòdul de compra")
+
+Si visitem les diferents seccions,  comprovarem que aquest mòdul està interconnectat als altres com  "Facturació" (elements com ara clients, proveïdors i productes, són  comuns). 
+
+Aquest grau d'interconnexió de mòduls facilita que Odoo siga un sistema integral i evita redundància de dades, errors, etc.
+
+Entre altres opcions, amb aquest mòdul podrem:
+
+- Realitzar sol·licituds de pressupostos de compra.
+  - Aquests pressupostos es poden enviar per correu electrònic o imprimir-se.
+
+- Realitzar comandes o convertir en comanda un pressupost de compra.
+
+A continuació un pressupost de compra:
+![Pressupost de compra](assets/imatges/03_31_compra_pressupost.png "Pressupost de compra")
+
+Una vegada confirmat aquest pressupost, es converteix en comanda com veiem ací:
+![Comanda de compra](assets/imatges/03_32_compra_comanda.png "Comanda de compra")
+
+### 7.4 Mòdul de vendes
+
+D'igual manera que el mòdul de compres cal afegir el mòdul de "Vendes".
+![Mòdul de vendes](assets/imatges/03_33_vendes.png "Mòdul de vendes")
+
+Una vegada instal·lat tot correctament, tindrem al menú "superior esquerre" una nova secció "Vendes", amb subseccions com "Comandes", "A facturar", "Productes", "Informes" i "Configuració".
+![Configuració del mòdul de vendes](assets/imatges/03_34_vendes_configuracio.png "Configuració del mòdul de vendes")
+
+A continuació hi ha un pressupost de venda:
+![Pressupost de venda](assets/imatges/03_35_vendes_pressupost.png "Pressupost de venda")
+
+Una vegada confirmat el pressupost es genera la comanda i fins i tot aprofitant la interconnexió amb el mòdul de "Facturació", generar la factura de la comanda.
+![Factura de venda](assets/imatges/03_36_vendes_factura.png "Factura de venda")
+
+### 7.5 Mòdul de punt de venda
+
+Per a la venda de productes i/o serveis cal instal·lar el mòdul "Punt de venda".
+![Punt de venda](assets/imatges/03_37_punt_venda.png "Punt de venda")
+
+Una vegada instal·lat tot correctament, tindrem al menú "superior esquerre" una nova secció "Punt de venda", amb subseccions com "Tauler", "Comandes", "Productes", "Informes" i "Configuració".
+
+>❕ Atenció: els productes utilitzats en el punt de venda, han de ser donats d'alta de nou dins d'aquest mòdul.
+![Configuració de punt de venda](assets/imatges/03_38_punt_venda_configuracio.png "Configuració de punt de venda")
+
+Una vegada configurats els productes, tindrem accés per a accedir al nostre punt de venda. Cada vegada que acabem d'utilitzar el punt de venda, és recomanable tancar sessió perquè els canvis siguen efectius.
+![Configuració de productes en punt de venda](assets/imatges/03_39_punt_venda_productes.png "Configuració de productes en punt de venda")
+
+Això ens permetrà des de qualsevol dispositiu prendre una nota ràpida dels productes de forma similar a com es veu a la imatge:
+![Compra en punt de venda](assets/imatges/03_40_punt_venda_compra.png "Compra en punt de venda")
+
+Després d'un pagament registrat, fins i tot ens permet emetre un rebut des del mateix punt de venda:
+![Tíquet en punt de venda](assets/imatges/03_41_punt_venda_tiquet.png "Tíquet en punt de venda")
+
+### 7.6 Altres mòduls d'interès
+
+A banda dels mòduls  comentats anteriorment, hi ha altres opcions a considerar com poden ser:
+
+- Websites i comerç electrònic
+  - Comerç electrònic: permet implementar una botiga virtual vinculada a Odoo.
+  - Website Builder: permet crear un lloc web des del mateix sistema Odoo.
+  - Esdeveniments: permet gestionar esdeveniments i vendre entrades.
+  - Mètode de pagament Paypal: introdueix el mètode de pagament per Paypal.
+
+- Relació amb els clients
+
+  - CRM: "Customer Relationship Management", per a seguiment de clients potencials i oportunitats de negoci.
+
+  - Cites: mòdul per programar i gestionar cites amb clients.
+
+  - Màrqueting per email/SMS: aquests són dos mòduls per a la gestió de campanyes de màrqueting per email/SMS.
+
+  - Signar: mòdul per signar documents ràpidament.
+
+- Relació amb els empleats:
+
+  - Calendari: mòdul per programar i gestionar cites amb empleats.
+
+  - Despeses: mòdul per gestionar i validar despeses dels empleats.
+
+  - Planificació: permet gestionar l'horari dels empleats .
+
+- Projecte: permet gestionar l'organització de projectes de l'negoci.
+- Codi de barres: permetre l'ús de codi de barres per a operacions logístiques.
+- Manteniment: mòdul que permet gestionar les necessitats de manteniment del negoci.
+
+
 ## ACTIVITATS
 ** ACTIVITAT 01 **
 Fes un document on es demostre que has realitzat amb èxit la instal·lació d’Odoo de les següents maneres:
@@ -397,22 +563,161 @@ Fes un document on es demostre que has realitzat amb èxit la instal·lació d�
 - Posada en marxa utilitzant la imatge de Docker Hub d’Odoo i utilitzant Docker Compose. En aquest context volem tant la versió per a producció com per a desenvolupament.
 
 Les captures a aportar són les següents:
-    - Captura de les característiques HW (processadors, RAM, disc) emprades a les màquines amb hipervisor i al núvol.
-    - Inici del procés d'instal·lació
-    - Instal·lació i vertificació del sistema gestor de base de dades
-    - Instal·lació del renderitzador de codi HTML a PDF
-    - Instal·lació i verificació del repositori d'Odoo 17 i del mode d'instal·lació afegit (producció/desenvolupament)
-    - Pantalla inicial de l'aplicació Odoo
-    - Configuració de l'usuari de l'aplicació
-    - Instal·lació dels mòduls requerits (Vendes, Lloc web)
-    - Algun pas addicional que siga considerable afegir (ex: bug d'Odoo 17 en Ubuntu, problema de paquets trencats en la instal·lació del wkhtmltopdf)
+	    - Captura de les característiques HW (processadors, RAM, disc) emprades a les màquines amb hipervisor i al núvol.
+	    - Inici del procés d'instal·lació
+	    - Instal·lació i vertificació del sistema gestor de base de dades
+	    - Instal·lació del renderitzador de codi HTML a PDF
+	    - Instal·lació i verificació del repositori d'Odoo 17 i del mode d'instal·lació afegit (producció/desenvolupament)
+	    - Pantalla inicial de l'aplicació Odoo
+	    - Configuració de l'usuari de l'aplicació
+	    - Instal·lació dels mòduls requerits (Vendes, Lloc web)
+	    - Algun pas addicional que siga considerable afegir (ex: bug d'Odoo 17 en Ubuntu)
 
 ** ACTIVITAT 02 **
 Realitza una instal·lació multicapa emprant màquines virtuals amb hipervisor o en el núvol de manera que el sistema gestor de base de dades estiga en una màquina diferenciada de la que conté l'aplicatiu d'Odoo.
-**Advertència**: Cal modificar la referència al sistema gestor de base de dades en el fitxer de configuració d'Odoo (/etc/odoo/odoo.conf) i reiniciar el servei
+**Advertència**: Cal modificar la referència al sistema gestor de base de dades en el fitxer de configuració d'Odoo (/etc/odoo/odoo.conf)
 
 ** ACTIVITAT 03 **
 Realitza la mateixa tasca emprant el servei RDS d'AWS.
+
+** ACTIVITAT 04 **
+
+Realitzarem la gestió amb l’ERP d’Odoo sobre AWS en Ubuntu Server, d'una empresa dedicada a la seguretat informàtica. Per a això hem de configurar les següents característiques.
+
+**Adjuntar les captures dins d'este mateix document en el seu apartat corresponent.**
+
+Crear una nova base de dades anomenada **SGEbdXX**, on XX, es el número del teu ordenador.
+
+L’empresa s’anomenarà **modulsge**, l'adreça de la qual serà Carrer Sense Número, Alcoi, Alacant i correu [modulsge@modulsge.com](mailto:modulsge@modulsge.com) Hauràs d'afegir-li una imatge o logo. 
+
+Necessitarem instal·lar els següents mòduls:
+
+​	 • Compres (Administració)
+
+​	 • Vendes (Comercial)
+
+​	 • Empleats (Recursos Humans)
+
+​	 • Lloc web (I+D)
+
+​	 • CRM
+
+​	 • Inventari
+
+​	 • Facturació
+
+  ***Realitza una captura del menú que mostre els mòduls instal·lats actualment.***
+
+
+
+*Departaments i usuaris.*
+
+Necessitarem els següents departaments:
+
+​	 • Compres
+
+​	 • Recursos Humans
+
+​	 • Vendes
+
+​	 • R+D
+
+Cada departament té els següents empleats amb accés a l'ERP:
+
+
+
+*Compres*
+
+-  Joan Carles García García (cap del departament). Permisos d'administrador en Mòdul de Compres i Inventari.
+  - jgarcia@modulsge.com
+- Ana Vañó Reig. Permisos d'usuari en mòdul Compres i Inventari.
+  - avanyo@modulsge.com
+
+*Vendes (Comercials)*
+
+- Matíes Monllor (Cap de departament). Permisos d’administrador en mòdul vendes.
+  - [mmonllor@modulsge.com](mailto:mmonllor@modulosge.com)
+- Laura Martí. Permisos d’usuari en mòdul vendes.
+  - [lmarti@modulsge.com](mailto:lmarti@modulosge.com)
+
+*Recursos Humans (RRHH)*
+
+- Marta Pérez (Cap del departament). Permisos d’administradora en mòdul Empleats.
+  - [mperez@modulsge.com](mailto:mperez@modulosge.com)
+- Òscar Pla. Permisos d’usuari en mòdul Empleats.
+  - [opla@modulosge.com](mailto:opla@modulosge.com)
+
+*R+D*
+
+- Manuel Sánchez. Permisos d’administrador en Mòdul Lloc Web i CRM
+  - [msanchez@modulsge.com](mailto:msanchez@modulosge.com)
+- Alfred Torró. Usuari en Mòdul LlocWeb i CRM
+  - [atorro@modulosge.com](mailto:atorro@modulosge.com)
+
+***Realiza una captura que mostre els departaments creats i quants usuaris té cada departament.***
+
+
+
+El **CEO o gerent** de l’empresa és Pedro García Pérez, no tindrà accés a Odoo però serà un treballador més. 
+
+***Realitza una captura que mostre els treballadors que hi ha en l’empresa.***
+
+Els treballadors que no tinguen cap, com a responsable tindran al cap del seu departament. Aquells que siguen caps de departament, el seu responsable serà Pedro García Pérez el CEO. 
+
+**Productes i serveis**
+
+Des del departament de compres es creen els següents proveïdors informàtics:
+
+- Secure Systems S.L. (C/: Góngora 21, Alcoi, Alacant, CP 03083, Espanya, tlfn: 965123456)
+- Dell Ing S.L. (C/: Alfons X el Savi 15, Alacant, Alacant, CP 03006, Espanya tlf: 965654321)
+
+***Realitza una captura que mostre els proveïdors que hi ha a l’empresa.***
+
+Afegix 3 productes com inventariables i amb possibilitat de vendre's i comprar-se. El seu proveïdor serà Secure Systems S.L;
+
+-  Micro webcam preu 80 €. Preu de cost 50 € – Estoc 23 (L'estoc haureu de donar-lo d'alta des d'Inventari/Productes, seleccionant el producte en qüestió).
+-  Lector d'Iris, preu 400 €. Preu de cost 260 € – Estoc 10
+-  Clau de seguretat FIDO, 45 €. Preu de cost 20 € – Estoc 30
+
+ Afegix un producte com emmagatzemable i amb possibilitat només de compra, el proveïdor serà Dell Ing S.L
+
+- Portátil Latitude 3180 Education, precio 289€.  
+
+Afegix 3 serveis d’auditoría de seguretat (serveis) sense possibilitat de ser comprat:
+
+- Auditoría Pentesting 3000 €. Preu de cost 1000 €.
+- Auditoría Red Team 6000 €. Preu de cost 2000 €.
+- Auditoría Perimetral 2000 €. Preu de cost 1000 €.
+
+ ***Realitza una captura que mostre els productes que hi ha donats d'alta en el sistema.***
+
+
+
+Des del departament de vendes crea els següents clients de l'empresa:
+
+ • Gestoria Ramón Fores i Fores (Carrer Alfafara 4, Alcoi, Alacant, CP 03083, Espanya tlf: 965123456). Si falta alguna dada inventa-te-la.
+
+ • BBVA (Av Albereda 54, Alcoi, Alacant, CP 03083, Espanya, tlf:965654123). Si falta alguna dada inventa-te-la
+
+***Realitza una captura que mostre els clients que hi ha donats d'alta en el sistema***
+
+**Compres i vendes**
+
+L'empresa **BBVA** ens demana una auditoria Xarxa Team per a fer un estudi complet de la seua ciberseguretat. Per a això, des del departament de vendes, li passarem un pressupost del qual haurem d'esperar la seua confirmació. La data de caducitat serà de 20 dies naturals des de la creació del pressupost i un termini de pagament de 15 dies. El pressupost el passarem a PDF i li ho enviarem per correu electrònic.
+
+Posteriorment BBVA ens confirma la venda, generem la comanda i es creem la factura. Finalment BBVA ens paga la factura, hem de registrar el pagament. 
+
+***Realitza una captura que mostre la factura pagada per BBVA.***
+
+**Gestoria Ramón Fores i Fores** vol un pressupost en PDF per a comprar 5 claus de seguretat i 2 lectors d'iris. Per a això, des del departament de vendes, li passarem un pressupost que haurem d'esperar la seua confirmació. La data de caducitat serà de 20 dies naturals des de la creació del pressupost i un termini de pagament de 15 dies. El pressupost el passarem a PDF i li ho enviarem per correu electrònic.
+
+Es requerix, la compra de 5 ordinadors portàtils Latitude 3180 Education per a l'empresa per la qual cosa serà necessari que el departament de compres realitze un pressupost i l'aprove. Finalment realitzar el pagament.
+
+***Realitza una captura que mostre la factura pagada a Dell Ing S.L.***
+
+La **gestoria Ramón Fores i Fores** es decidix a realitzar la compra pel que procedirem a confirmar la comanda. Es confirma la venda, es crea la factura i es valida el pagament.
+
+***Realitza una captura que mostre la factura pagada per la gestoria Ramón Fores i Fores.***
 
 
 
