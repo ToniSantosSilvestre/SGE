@@ -397,7 +397,6 @@ Fes un document on es demostre que has realitzat amb èxit la instal·lació d�
 - Posada en marxa utilitzant la imatge de Docker Hub d’Odoo i utilitzant Docker Compose. En aquest context volem tant la versió per a producció com per a desenvolupament.
 
 Les captures a aportar són les següents:
-
     - Captura de les característiques HW (processadors, RAM, disc) emprades a les màquines amb hipervisor i al núvol.
     - Inici del procés d'instal·lació
     - Instal·lació i vertificació del sistema gestor de base de dades
