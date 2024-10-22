@@ -719,5 +719,22 @@ La **gestoria Ramón Fores i Fores** es decidix a realitzar la compra pel que pr
 
 ***Realitza una captura que mostre la factura pagada per la gestoria Ramón Fores i Fores.***
 
+Pàgina web corporativa.
+El CEO de l'empresa, vol tindre una web actualitzada amb els productes de l'empresa, per a poder-la ensenyar als seus clients. Per a això parla amb el departament R+D perquè s'encarregue de la seua elaboració. Desitgen que es mostre la informació de l'empresa i els productes i servicis que l'empresa oferix.
+
+Crea una web amb els següents apartats:
+• Inici. Almenys una imatge de portada amb algun Eslògan, i un bloc amb text i imatge.
+• Els qui som. Almenys una capçalera amb imatge de fons, el bloc de Team i un TimeLine de l'evolució de l'empresa des dels seus inicis. (Textos Lorem Ipsum). 
+• Serveis. Almenys una capçalera amb imatge de fons i algun bloc per a mostrar de manera elegant els nostres principals servicis (les 3 auditories de seguretat amb els seus preus i la venda del lector d'iris i clau de seguretat).
+• Botiga. (Per a això, haurem d'instal·lar el mòdul de Comerç electrònic). Que apareguen els nostres productes micro webcam, lector d'Iris, lector de seguretat i les tres auditories.
+• Contacte. Almenys una capçalera amb imatge de fons i un formulari de contacte.
+**Realitza una captura de cadascun dels apartats generats per separat.**
+
+TPV físic.
+La nostra empresa està començant a funcionar molt bé, per la qual cosa ens decidim a muntar també una botiga física per a la venda dels nostres productes. Genera el TPV per a la venda dels nostres productes.
+
+Al TPV només hauria de tindre accés Laura Martí i Vicente Aracil.
+**Realiza una captura de com s’està veient el TPV físic.**
+
 
 
