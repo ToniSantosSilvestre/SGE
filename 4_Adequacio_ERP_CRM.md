@@ -37,14 +37,14 @@ Com ja vam veure en les unitats anteriors, és important tenir un directori per 
 Si hem fet una instal·lació manual tal com es va explicar en les unitats anteriors, un script per aconseguir crear aquest directori a la carpeta "/var/lib/Odoo/modules" és:
 
 >// Estant situat en /var/lib/odoo:
->// Creem directori “modules”
->mkdir modules
->// Creem un módul anomenat “prova” amb la utilitat “odoo scaffold”
->odoo scaffold prova ./modules
->// Modifiquem el path dels “addons”.
->odoo --addons-path="/var/lib/odoo/modules,/usr/lib/python3/dist-packages/odoo/addons" --save
->// Llancem el servidor Odoo i actualitzem el módul “prova” en la bd “empresa”
->odoo -u pruebas -d empresa
+// Creem directori “modules”
+mkdir modules
+// Creem un módul anomenat “prova” amb la utilitat “odoo scaffold”
+odoo scaffold prova ./modules
+// Modifiquem el path dels “addons”.
+odoo --addons-path="/var/lib/odoo/modules,/usr/lib/python3/dist-packages/odoo/addons" --save
+// Llancem el servidor Odoo i actualitzem el módul “prova” en la bd “empresa”
+odoo -u pruebas -d empresa
 
 Amb aquesta acció, el que aconseguim és afegir el nostre directori "modules" al PATH d’Odoo (emmagatzemat a l'arxiu de configuració "**.odoorc**", situat al “home” de l'usuari Odoo). Amb l'últim comandament hem arrancat Odoo actualitzant aquest mòdul ( "prova") a la base de dades "empresa".
 
