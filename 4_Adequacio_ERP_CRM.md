@@ -44,7 +44,7 @@ odoo scaffold prova ./modules
 // Modifiquem el path dels “addons”.
 odoo --addons-path="/var/lib/odoo/modules,/usr/lib/python3/dist-packages/odoo/addons" --save
 // Llancem el servidor Odoo i actualitzem el módul “prova” en la bd “empresa”
-odoo -u pruebas -d empresa
+odoo -u prova -d empresa
 
 Amb aquesta acció, el que aconseguim és afegir el nostre directori "modules" al PATH d’Odoo (emmagatzemat a l'arxiu de configuració "**.odoorc**", situat al “home” de l'usuari Odoo). Amb l'últim comandament hem arrancat Odoo actualitzant aquest mòdul ( "prova") a la base de dades "empresa".
 
