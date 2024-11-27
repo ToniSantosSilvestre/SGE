@@ -43,7 +43,8 @@ Quan instal·lem Odoo, abans d'instal·lar cap mòdul, tenim accés al “backen
 Per a ampliar les funcionalitats o adaptar Odoo a les necessitats d'una empresa, no cal modificar el codi font d'Odoo. Tan sols necessitem crear un mòdul.
 
 Els **mòduls d'Odoo** poden modificar el comportament del programa, l'estructura de la base de dades i/o la interfície d'usuari. En principi, un mòdul es pot instal·lar i desinstal·lar i els canvis que implicava el mòdul es reverteixen completament.
-<imatge>
+![Peticions de l'aplicació d'Odoo](assets/imatges/05_01_esquema_peticions.png)
+
 Odoo facilita el desenvolupament de mòduls perquè, a més d'un ERP, és un framework de programació. Odoo té el seu propi framework tipus **RAD (Rapid Application Development)**. Això significa que amb poc esforç es poden aconseguir aplicacions amb altes prestacions i segures.
 
 >❕**Atenció**: el poc esforç és relatiu. Per a desenvolupar correctament en Odoo són necessaris amplis coneixements de Python, XML, HTML, Javascript i altres tecnologies associades com QWeb, JQuery, XML-RPC, etc. La corba d'aprenentatge és alta i la documentació és escassa. A més, els errors són més difícils d'interpretar perquè no sabem tot el que està passant per davall. La frustració inicial es veurà compensada amb una major agilitat i menys errors.
@@ -107,7 +108,7 @@ Podem crear mòduls per a modificar, eliminar o ampliar parts d'altres mòduls. 
 
 Aquest sistema modular funciona perquè, cada vegada que es reinicia el servidor o s'actualitza un mòdul, s'interpreten els fitxers Python que defineixen els models i l'ORM mapeja les novetats en la base de dades. A més, es carreguen les dades dels fitxers XML en la base de dades i s'actualitzen les dades que han canviat.
 
-### 3.1 Composició d'un mòdul
+### 3.1 Estructura d'un mòdul
 
 Els mòduls modifiquen parts de Model-Vista-Controlador. D'aquesta manera, un mòdul es compon de fitxers Python, XML, CSS o Javascript entre altres. Tots aquests arxius han d'estar en una carpeta amb el nom del mòdul.
 
@@ -155,3 +156,156 @@ Una classe heretada de “models.Model” es comporta de la següent manera:
 - Els models tenen les seues pròpies funcions per a no haver d'accedir a la base de dades per a modificar o crear registres. A més, incorporen restriccions d'integritat.
 
 Aquest és l'exemple d'un model amb solament un “field”:
+
+![Model de classe d'Odoo](/assets/imatges/05_02_classe_model.png)
+
+Sobre el codi anterior, vegem detalladament tot el que passa:
+
+- Es defineix una classe de Python que hereta de “**models.Model**”
+- Es defineixen dos atributs “**_name**” i “**_description**”. El “**_name**” és obligatori en els models i és el nom del model. Ací s'observa l'abstracció, ja no s'accedirà a la classe “**Amodel**”, sinó al model “**a.model**”.
+- Després està la definició d'un altre atribut tipus “**field**” que serà mapatge per l'ORM en la base de dades. Com es pot observar, crida al constructor de la classe “**fields.Char**” amb uns arguments. Tots els arguments són opcionals en el cas de “**Char**”. Hi ha constructors per a tots els tipus de dades.
+
+> 💬 **Interessant**: és molt probable que a hores d'ara no entengues el perquè de la majoria  del codi anterior. Els frameworks requereixen entendre moltes coses  abans de poder començar. No obstant això, amb aquest fragment de codi ja tenim solucionat l'emmagatzematge en la base de dades, la integritat de les dades i part de la interacció amb l'usuari.
+
+> 💬 **Interessant**: Odoo està pensat perquè siga fàcilment modificable per la web. Sense  necessitat d'entrar al codi. Això és molt útil per a prototipar les  vistes, per exemple.
+> Una de les  funcionalitats és la manera desenvolupador, que permet, entre moltes  altres coses, explorar els models que té en aquest moment el servidor. 
+
+Els models tenen alguns atributs del model, com “**_name**” o “**_description**”. Un altre atribut de model important és “**_rec_name**” que indica que atribut pren nom el registre i que per defecte apunta a l'atribut “name” (no confondre amb “_name”).
+
+- En les vistes (que veurem més endavant), en alguns camps es basa en l'atribut marcat per “**_rec_name**”, que per defecte és “**name**”. Si no tenim un atribut “name” o volem que siga un altre atribut el que de nom, podem modificar-ho amb “**_rec_name=’nomatribut**’”.
+
+
+
+ ### 4.2 Atributs tipus “field” simples
+
+Els models tenen altres atributs tipus “field”, que es mapejen en la base  de dades i als quals l'usuari té accés i mètodes que conformen el  controlador. A continuació detallarem tots els tipus de “field” que hi  ha i les seues possibilitats:
+
+En primer lloc, definim els “fields” de dades més habituals:
+
+- **Integer**
+- **Char**
+- **Text**
+- **Date**
+- **Datetime**
+- **Float**
+- **Boolean**
+- **Html**
+- **Binary**: arxius binaris que guarda en format base64. Poden guardar-se imatges o  altres elements. Abans d'Odoo 13 en aquest tipus de “fields” es  guardaven les imatges.
+
+Dins dels “fields” de dades, hi ha alguns una mica més complexos:
+
+- **Image**: a partir de la versió 13 d'Odoo es poden guardar imatges en aquest  “field”. Cal definir el “max_width” o “max_height” i es redimensionarà  en guardar. 
+- **Selection**: guarda una dada, però cal dir-li amb una llista de tuples les opcions que té.
+
+Ací un exemple de “Selection”:
+
+```python
+type = fields.Selection([('1','Basic'),('2','Intermediate'),('3','Completed')]) 
+
+aselection = fields.Selection(selection='a_function_name') # se puede definir su contenido en una función.
+```
+
+Tots els “fields” esmentats tenen un constructor que funciona de la mateixa  manera que en l'exemple anterior. Poden tenir un nom, un valor per  defecte, o fins i tot pot definir-se el seu contingut mitjançant una  funció.
+
+Al llarg d'aquest text es veuran exemples de com s'han definit “fields” segons les necessitats.
+
+### 4.3 Atributs “fields” relacionals
+
+A continuació, observarem els “fields” relacionals. Atés que l'ORM evita  que hàgem de crear les taules i les seues relacions en la base de dades, quan existeixen relacions entre models es necessiten uns camps que  definisquen aquelles relacions.
+
+
+
+**Exemple**: una comanda de venda té un client i un client pot fer moltes comandes de  venda. Al seu torn, aquesta comanda té moltes línies de comanda, que són només d’aquesta comanda i tenen un producte, que pot estar en moltes  línies de venda.
+
+
+
+En situacions com la de l'exemple, aquestes relacions acaben estant en la  base de dades amb claus alienes. Però amb els frameworks que implementen ORM, tot això és molt més senzill.
+
+Per a això utilitzarem els “fields” relacionals d'Odoo:
+
+- **Many2one**: és el més simple. Indica que el model en el qual està té una relació  molts a un amb un altre model. Això significa que un registre té relació amb un únic registre de l'altre model, mentre que l'altre registre pot  tenir relació amb molts registres del model que té el “Many2one”. En la  taula de la base de dades, això es traduirà en una clau aliena a l'altra taula.
+    - Exemple on es pretén que cada ciutat emmagatzeme el seu país.
+    ![Exemple de relació Many2One](/assets/imatges/05_03_relacio_many2one.png)
+
+- Les de “alumnes amb mòduls”, descrita en l'exemple anterior.
+- Una nova relació, on es relacionen alumnes repetidors amb mòduls pendents.
+
+No han de coincidir, però si no s'especifica una taula intermèdia diferent, **Odoo considerarà que és la mateixa relació**. En aquests casos cal especificar la taula intermèdia amb la sintaxi completa per a evitar errors:
+
+```python
+alumnos_ids = fields.Many2many(comodel_name='modulo.alumno',
+relation='modulos_alumnos', # El nombre de la tabla intermedia
+column1='modulo_id', # El nombre en la tabla intermedia de la clave a este modelo
+column2='alumno_id')  # El nombre de la clave al otro modelo.
+repetidores_ids = fields.Many2many(comodel_name='modulo.alumno',
+relation='modulos_alumnos_repetidores', # El nombre de la tabla intermedia
+column1='modulo_id', # El nombre en la tabla intermedia de la clave a este modelo
+column2='alumno_id')  # El nombre de la clave al otro modelo.
+modulos_ids = field.Many2many(comodel_name='modulo.modulo',
+relation='modulos_alumnos', # El nombre de la tabla intermedia
+column1='alumno_id', # El nombre en la tabla intermedia de la clave a este modelo
+column2='modulo_id')  # El nombre de la clave al otro modelo.
+pendientes_ids = field.Many2many(comodel_name='modulo.modulo',
+relation='modulos_alumnos_repetidores', # El nombre de la tabla intermedia
+column1='alumno_id', # El nombre en la tabla intermedia de la clave a este modelo
+column2='modulo_id')  # El nombre de la clave al otro modelo.
+```
+
+Les relacions “Many2one”, “One2many” i “Many2many” suposen la majoria de les relacions necessàries en qualsevol programa. Hi ha un altre tipus de “fields” relacionals especials que faciliten la programació:
+- **related**: en realitat no és un tipus de “field”, sinó una possible propietat de qualsevol dels tipus. El que fa un “field related” és mostrar una dada que està en un registre d'un altre model amb el qual es té una relació “Many2one”.
+
+Si prenem com a exemple l'anterior de les ciutats i països, imaginem que volem mostrar la bandera del país en el qual està la ciutat. La bandera serà un camp “Image” que estarà en el model país, però el volem mostrar també en el model ciutat. Per a això tenim dues possibles solucions:
+- La solució dolenta seria guardar la bandera en cada ciutat.
+
+- La bona solució és usar un “field related” per a accedir a la bandera.
+
+  ```python
+  pais_id = fields.Many2one('modulo.pais') # Esto en el modelo Ciudad
+  bandera = fields.Image(related='pais_id.bandera') # Suponiendo que existe el field bandera y es de tipo Image.
+  ```
+
+  
+
+>📖 **Important**: el “field related” pot tenir 'store=True' si volem que ho guarde en la base de dades. En la majoria de casos és redundant i no serveix. Però pot ser que per raons de rendiment, o per a poder cercar, s'haja de guardar. Això no respecta la tercera forma normal. En aqueix cas, Odoo s'encarrega de mantenir la coherència de les dades. 
+
+>📖 **Important**: un altre ús possible dels “field related” pot ser fer referència a “fields” del propi model per a tenir les dades repetides. Això és molt útil en les imatges, per exemple, per a emmagatzemar versions amb diferents resolucions. També pot ser útil per a mostrar els mateixos “fields” amb diversos “widgets”.
+
+- **Reference**: és una referència a un camp arbitrari d'un model. En realitat no provoca una relació en la base de dades. El que guarda és el nom del model i del camp en un “field char”.
+- **Many2oneReference**: és un “Many2one” però en el qual també cal indicar el model al qual fa referència. No són molt utilitzats.
+
+> 💬 **Interessant**: en algunes ocasions, influïts pel pensament de les bases de dades relacionals, podem decidir que necessitem una relació **“One2one”. Odoo va deixar d'usar-les per motius de rendiment i recomana en el seu lloc unir els dos models en un**. No obstant això, es pot imitar amb dos “Many2many” computats o un “One2many” limitat a un sol registre. En els dos casos, serà tasca del programador garantir el bon funcionament d'aqueixa relació.
+
+Una vegada estudiat el concepte de model i dels 'fields', detinguem-nos un moment a analitzar aquest codi que defineix 2 models:
+
+```python
+# -*- coding: utf-8 -*-
+from odoo import models, fields, api
+from openerp.exceptions import ValidationError
+class net(models.Model):
+    _name = 'networks.net'
+    _description = 'Networks Model'
+    name = fields.Char()
+    net_ip = fields.Char()
+    mask = fields.Integer()
+    net_map = fields.image()
+    net_class = fields.Selection([('a','A'),('b','B'),('c','C')])
+    pcs = fields.One2many('networks.pc','net')
+    servers = fields.Many2many('networks.pc',relation='net_servers')              
+class pc(models.Model):
+    _name = 'networks.pc'
+    _description = 'PCs Model'
+    name = fields.Char(default="PC")
+    number = fields.Integer()
+    ip = fields.Char()
+    ping = fields.Float()
+    registered = fields.Date()
+    uptime = fields.Datetime()
+    net = fields.Many2one('networks.net')
+    user = fields.Many2one('res.partner')
+    servers = fields.Many2many('networks.net',relation='net_servers')
+```
+
+Com es pot veure, estan quasi tots els tipus bàsics de field. També podem veure fields relacionals. Parem atenció al “Many2one” anomentat “net” dels “PC” que permet que funcione l'”One2many” anomenat “pcs” del model “networks.net”. També són interessants els “Many2many” en els quals declarem el nom de la relació per a controlar el nom de la taula intermèdia.
+
+Una vegada repassats els tipus de fields i vist un exemple, ja podríem fer un mòdul amb dades estàtiques i relacions entre els models. Ens faltaria la vista per a poder veure aquests models en el client web. Pots passar directament a l'apartat de la vista si vols tenir un mòdul funcional mínim. Però en el model queden algunes coses que explicar.
+
