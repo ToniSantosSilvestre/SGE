@@ -309,3 +309,31 @@ Com es pot veure, estan quasi tots els tipus bàsics de field. També podem veur
 
 Una vegada repassats els tipus de fields i vist un exemple, ja podríem fer un mòdul amb dades estàtiques i relacions entre els models. Ens faltaria la vista per a poder veure aquests models en el client web. Pots passar directament a l'apartat de la vista si vols tenir un mòdul funcional mínim. Però en el model queden algunes coses que explicar.
 
+
+
+### 4.4 Atributs “fields” computats (“computed”)
+
+Fins ara, els “fields” que hem vist emmagatzemaven alguna cosa en la base de dades. No obstant això, pot ser que no vulguem que algunes dades esten  guardats en la base de dades, sinó que es recalculen cada vegada que els veurem. En aqueix cas, cal utilitzar camps computats.
+
+Un “field computed” es defineix igual que un normal, però entre els seus  arguments cal indicar el nom de la funció que el computa:
+
+```python
+taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
+@api.depends('seats', 'attendee_ids')  # El decorador @api.depends() indica que se llama a  
+                                 # la función cada vez que cambie el valor de los fields
+                                 # seats i attendee_ids.
+def _taken_seats(self):
+   for r in self:  # El for recorre self, que es un recordset con los registros activos              
+
+if not r.seats: # r es un singleton y se puede acceder a los atributos como un objeto
+         r.taken_seats = 0.0 # esta asignación ya hace que se vea el resultado.
+      else:
+         r.taken_seats = 100.0 * len(r.attendee_ids) / r.seats
+```
+> 💬** Interessant**: hi ha un truc per a poder tenir “fields computed” amb “store=False” i alhora poder cercar o ordenar. El que es pot fer és un altre “field” del mateix tipus que no siga “computed”, però que se sobreescriga quan s'executa el mètode del qual sí que és “computed”. D'aquesta manera, es guarda en la base de dades, encara que es recalcula cada vegada. El problema és que han d'estar els dos “fields” en la vista. Això se soluciona posant “invisible=’1’” en el “field computed”. L'usuari no l'observa, no obstant això Odoo el recalcula.
+
+Els “field computed” no es guarden en la base de  dades, però en algunes ocasions pot ser que necessitem que es guarde  (per exemple, per a cercar sobre ells). En aquest cas podem usar  “store=True”. Això és  perillós, ja que pot ser que no recalcule més aquest camp. El decorador  “@api.depends()” soluciona aqueix problema si el “computed” depén d'un  altre “field”. 
+
+En cas de no voler guardar en la base de dades, però si voler cercar en el camp, Odoo proporciona la funció “search”. Aquesta funció s'executa quan s'intenta cercar per aqueix camp. Aquesta funció retornarà un domini de cerca (això s'explicarà més endavant). El problema és que tampoc pot ser un domini molt complex i limita la  cerca.
+
+En poques ocasions necessitem escriure directament en un “field computed”. Si és “computed” serà perquè el seu valor depén d'altres factors. Si es permetera escriure en un “field computed”, no seria coherent amb els “fields” dels quals depén. No obstant això, sí que podem permetre que s'escriga directament si fem la funció “inverse”, la qual ha de sobreescriure els “fields” dels quals depén el “computed” perquè el càlcul siga el que introdueix l'usuari. 
