@@ -142,7 +142,7 @@ Una vegada executat aquest comando, tenim en la ruta indicada, l'estructura bàs
 
 ## 4.  Models
 
-## 4.1 Introducció als models en Odoo
+### 4.1 Introducció als models en Odoo
 
 Els models són una abstracció pròpia de molts frameworks i relacionada amb l'ORM. Un model es defineix com una classe Python que hereta de la classe “**models.Model**”. En heretar d'aquesta classe, adquireix unes propietats de manera transparent per al programador. A partir d'aquest moment, les classes del llenguatge de programació queden per davall d'un nivell més d'abstracció.
 
@@ -337,3 +337,614 @@ Els “field computed” no es guarden en la base de  dades, però en algunes oc
 En cas de no voler guardar en la base de dades, però si voler cercar en el camp, Odoo proporciona la funció “search”. Aquesta funció s'executa quan s'intenta cercar per aqueix camp. Aquesta funció retornarà un domini de cerca (això s'explicarà més endavant). El problema és que tampoc pot ser un domini molt complex i limita la  cerca.
 
 En poques ocasions necessitem escriure directament en un “field computed”. Si és “computed” serà perquè el seu valor depén d'altres factors. Si es permetera escriure en un “field computed”, no seria coherent amb els “fields” dels quals depén. No obstant això, sí que podem permetre que s'escriga directament si fem la funció “inverse”, la qual ha de sobreescriure els “fields” dels quals depén el “computed” perquè el càlcul siga el que introdueix l'usuari. 
+
+### 4.5 Valors per defecte
+
+En moltes ocasions, per a facilitar el treball als usuaris, alguns “fields” poden tenir un valor per defecte. Aquest valor per defecte pot ser sempre el mateix o ser computat en el moment en què s'inicia el formulari. A diferència dels “fields computed”, es permet per defecte que l'usuari el modifique i no depén del que l'usuari va introduint en altres “fields”.
+
+Perquè un “field” tinga el valor per defecte, cal posar en el seu constructor l'argument “default=”. En cas de ser un valor estàtic, només cal posar el valor. En cas de ser un valor per defecte calculat, es pot posar la funció que el calcula.
+
+```python
+name = fields.Char(default="Unknown")
+user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+start_date = fields.Date(default=lambda self: fields.Date.today())
+active = fields.Boolean(default=True)
+def compute_default_value(self):
+        return self.get_value()
+a_field = fields.Char(default=compute_default_value)
+```
+
+A continuació expliquem l’exemple anterior:
+
+- En la primera línia es veu la manera més fàcil d'assignar un valor per defecte, una simple cadena de caràcters per al “field Char”.
+- En la segona línia s'usa una funció “lambda” que obté l'usuari.
+- En la tercera una que obté la data.
+- En la quarta va un “default” simple que assigna un valor booleà.
+- Finalment, tenim una funció que després és referenciada en el “default” de l'últim “field”.
+
+Recordem que les funcions “lambda” són funcions anònimes definides en el lloc on s'invocaran. No poden tenir més d'una línia.
+
+> 📖 **Atenció**: no és funció d'aquestes anotacions explicar com es programa en Python. Si no les coneixies, és molt recomanable que cerques per internet i amplies informació sobre les funcions “lambda”. Al llarg d'aquestes anotacions les tornarem a fer servir i podràs veure més exemples.
+
+La segona cosa que hi ha és la definició de la funció abans de ser invocada. Python és un llenguatge interpretat i no pot invocar funcions que no s'han definit prèviament de ser invocades. En el cas dels “fields computed”, això no té importància perquè s'invoquen quan l'usuari necessita veure el “field”. Però els “defaults” s'executen quan es reinicia el servidor Odoo i interpreta tots els fitxers Python.
+
+Aquest efecte es pot veure de manera clara en la funció lambda que calcula l'hora. Si en comptes del que hi ha en l'exemple, posàrem directament la funció “**fields.Date.today()**”, posaria la data de reinici del servidor i no la data de creació del registre. En canvi, en referenciar a una funció “lambda”, aquesta s'executa cada vegada que el programa entra en aqueixa referència. Igual que en referenciar a una funció normal amb nom.
+
+> 💬 **Interessant**: no hi ha millor manera d'aprendre que provar les coses. Recomanem crear un model nou amb valors per defecte i provar de posar la data només amb la funció de data i després dins de la funció lambda i comprovar el que passa.
+
+### 4.6 Restriccions (constraints)
+
+No en tots els “fields” els usuaris poden posar de tot. Per exemple, podem necessitar limitar el preu d'un producte en funció d'uns límits  preestablits. Si l'usuari crea un nou producte i es passa en posar el  preu, no ha de deixar-li guardar. Les restriccions s'aconsegueixen amb  un decorador anomenat “**@api.constraint()**” el qual executarà una funció que revisarà si l'usuari ha introduït correctament les dades. Vegem un exemple:
+
+```python
+from odoo.exceptions import ValidationError 
+... 
+@api.constrains('age') 
+def _check_age(self):     
+	for record in self:
+		if record.age > 20:        
+			raise ValidationError("Your record is too old: %s" % record.age)
+```
+
+Es suposa que hi ha un “field” anomenat “age”. Quan està modificat i s'intenta  guardar es diu a la funció que té el decorador. Aquesta recorre el  “recordset” (recordem que és important posar sempre el “for record in  self”). Per a cada “singleton” compara l'edat i si alguna és major de  20, llança un error de validació. Aquest llançament impedeix que es  guarde en la base de dades i avisa a l'usuari del seu error.
+
+A vegades és més còmode posar una restricció SQL que fer l'algorisme que  el comprova. A més de més eficient en termes de computació. Per a això  podem usar una “_sql_constraints”:
+
+```python
+_sql_constraints = [ 
+('name_uniq', 'unique(name)', 'Custom Warning Message'), 
+('contact_uniq', 'unique(contact)', 'Custom Warning Message') 
+]
+```
+
+Les “SQL contraints” són una llista de tuples en les quals està el nom de  la restricció, la restricció SQL i el missatge en cas d’errada.
+
+## 5. Vista
+
+L'esquema Model-Vista-Controlador que segueix Odoo, la vista s'encarrega de tot  el que té a veure amb la interacció amb l'usuari. En Odoo, la vista és  un programa complet de client en Javascript que es comunica amb el  servidor amb missatges breus. La vista té tres parts molt diferents: El  “backend”, la web i el TPV. **Nosaltres ens centrarem en la vista del “backend”**. 
+
+![Carrega de vista](/assets/05_04_vista_model.png)
+
+En la primera connexió amb el navegador web, el servidor Odoo li proporciona un HTML mínim, una SPA (Single Page Application) en Javascript i un CSS. Això és un client web del servidor, és el que es considera la vista. Però tampoc carrega la vista completa, ja que podria ser immensa. Cada vegada que els menús o botons de la vista requereixen carregar la visualització d'unes dades, demanen al servidor un XML que definisca com es veuran aqueixes dades i un JSON amb les dades. Llavors la vista renderitza les dades segons l'esquema de l’XML i els estils definits en el client. Aquesta visualització es fa amb uns elements anomenats Ginys, que són combinacions de CSS, HTML i Javascript que defineixen l'aspecte i comportament d'una mena de dades en una vista en concret. Tot això és el que veurem amb detall en aquest apartat.
+
+![Renderització de vista](/assets/05_05_renderitzacio_vista.png)
+
+Els XML que defineixen els elements de la vista es guarden en la base de dades i són consultats com qualsevol altre model. D'aquesta manera se simplifica la comunicació entre el client web i el servidor i el treball del controlador. Com que quan creguem un mòdul, volem definir les seues vistes, hem de crear arxius XML per a guardar coses en la base de dades. Aquests seran referenciats en el “__manifest__.py” en l'apartat de data.
+
+> 💬 **Interessant**: observeu el que ha passat quan es crea un mòdul amb “scaffold”. En el “__manifest__.py” hi ha una referència a un XML en el directori “**views**”. Aquest XML té un exemple comentat dels principals elements de les vistes, que veurem a continuació.
+
+La vista té diversos elements necessaris per a funcionar:
+
+- **Definicions de vistes**: són els més evidents. Són les mateixes definicions de les vistes, guardades en el model “**ir.ui.view**”. Aquests elements tenen almenys els “fields” que es mostraran i poden tenir informació sobre la disposició, el comportament o l'aspecte dels “fields”.
+- **Menús**: són altres elements fonamentals. Estan distribuïts de manera jeràrquica i es guarden en el model **“ir.ui.menu”**.
+- **Actions**: les accions o “**actions**” enllacen una acció de l'usuari (com prémer en un menú) amb una anomenada al servidor des del client per a demanar alguna cosa (com carregar una nova vista). Les “action”’ estan guardades en diversos models depenent del tipus.
+
+Ací un exemple complet:
+
+```xml
+<odoo>
+ <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="prueba.student_list">
+            <field name="name">Student list</field>
+            <field name="model">prueba.student</field>
+            <field name="arch" type="xml">
+               <tree>
+                  <field name="name"/>
+                  <field name="topics"/>
+               </tree>
+            </field>
+        </record>
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="prueba.student_action_window">
+            <field name="name">student window</field>
+            <field name="res_model">prueba.student</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Top menu item --> 
+        <menuitem name="prueba" id="prueba.menu_root"/>
+        <!-- menu categories -->
+        <menuitem name="Administration" id="prueba.menu_1" parent="prueba.menu_root"/>
+      <!-- actions -->
+        <menuitem name="Students" id="prueba.menu_1_student_list" parent="prueba.menu_1"
+      action="prueba.student_action_window"/>
+ </data>
+</odoo>
+```
+
+En aquest exemple es veuen “records” en XML que indiquen que es guardarà en la base de dades. Aquests “records” diuen el model on es guardarà i la llista de “fields” que volem guardar.
+
+El primer “record” defineix una vista de tipus “tree” que és una llista d'estudiants on es veuran els camps “name” i “topics”. El segon “rècord” és la definició d'un “action” tipus “window”, és a dir, que obri una finestra per a mostrar unes vistes de tipus “tree” i “form” (formulari). Els altres defineixen tres nivells de menú: el superior, l'intermedi i el menú desplegable que conté el “action”. Quan l'usuari navegue pels dos menús superiors i pressione el tercer element de menú s'executarà aquest “action” que carregarà la vista “tree” definida i una vista “form” inventada per Odoo.
+
+> 💬 **Interessant**: per a poder observar un model en el client web d'Odoo no necessitem més que un menú que accione un “action” tipus “window” sobre aqueix model. Odoo és capaç d'inventar les vistes bàsiques que ens permeten observar-ho. No obstant això solen ser menys atractives i útils que les que definim nosaltres. 
+
+Quedem-nos de moment amb la definició bàsica d'un “action window” i dels menús. Ens centrarem abans en les vistes.
+
+
+
+### 5.1 Vista Tree
+
+La vista “tree” mostra una llista de “records” sobre un model. Vegem un exemple bàsic:
+
+```xml
+<record model="ir.ui.view" id="prueba.student_list">
+            <field name="name">Student list</field>
+            <field name="model">prueba.student</field>
+            <field name="arch" type="xml">
+               <tree>
+                  <field name="name"/>
+                  <field name="topics"/>
+               </tree>
+            </field>
+</record>
+```
+
+Com es pot observar, aquesta vista es guardarà en el model “**ir.ui.view**” amb un **external ID** anomenat “prueba.student_list”. Té més possibles “fields”, però els mínims necessaris són “**name**”, “**model**” i “**arch**”. El “field arch” guarda l’XML que serà enviat al client perquè renderitze la vista.
+
+Dins del “field arch” està l'etiqueta “**<tree>**” que indica que és una llista i dins d'aquesta etiqueta tenim més  “fields” que són els “fields” del model “prova.student” que volem que es vegen.
+
+Aquesta vista “tree” es pot millorar de moltes formes. Vegem algunes d'elles:
+
+#### 5.1.1 Colors en les línies
+
+Odoo no dona llibertat absoluta al desenvolupador en aquest aspecte i permet un nombre limitat d'estils per a donar a les línies en funció d'alguna  condició. Aquests estils són com els de Bootstrap:
+
+- **decoration-bf**: líneas en BOLD 
+- **decoration-it:** líneas en ITALICS 
+- **decoration-danger**: color LIGHT RED 
+- **decoration-info**: color LIGHT BLUE 
+- **decoration-muted**: color LIGHT GRAY 
+- **decoration-primary**: color LIGHT PURPLE 
+- **decoration-success**: color LIGHT GREEN 
+- **decoration-warning**: color LIGHT BROWN
+
+```xml
+<tree decoration-info="state=='draft'" decoration-danger="state=='trashed'">
+```
+
+En aquest exemple es veu com s'assigna un estil en funció del valor del “field state”.
+
+>  💬 **Interessant**: es pot comparar un “field date” amb una variable de “QWeb” anomenada “**current_date**”: 
+>
+> ```xml
+> <tree decoration-info="start_date==current_date">
+> ```
+>
+> 
+
+#### 5.1.2 Línies editables
+
+Si no necessitem un formulari per a modificar alguns “fields”, podem fer el “tree” editable.
+
+> ❕ **Atenció**: si ho fem editable no s'obrirà un formulari quan l'usuari faça clic en un element de la llista.
+
+Per a fer-ho editable cal posar l'atribut “**editable=’[top | bottom]’**". A més, poden tenir un atribut “**on_write**” que indica què fer quan s'edita.
+
+#### 5.1.3 Camps invisibles
+
+Alguns camps només han d'estar per a definir el color de la línia, servir com a llançador d'un “field computed” o ser cercats, però l'usuari no  necessita veure'ls. Per a això es pot posar l'atribut “**invisible=’1’**” en el “field” que necessitem.
+
+#### 5.1.4 Càlculs de totals
+
+En els “fields” numèrics, si volem mostrar la suma total, podem usar l'atribut “sum”.
+
+Exemple de com quedaria una vista “tree” amb tot el que hem explicat:
+
+```xml
+<record model="ir.ui.view" id="prova.student_list">
+         <field name="name">Student list</field>
+         <field name="model">prova.student</field>
+         <field name="arch" type="xml">
+             <tree decoration-info="qualification&lt;5" editable="top">
+                <field name="name"/>
+                <field name="topics" invisible="true"/>
+         <field name="qualification" sum="Total Qualifications"/>
+             </tree>
+         </field>
+</record>
+```
+
+
+
+### 5.2 Vista Form
+
+Aquesta vista permet editar o crear un nou registre en el model que represente. Mostra un formulari que té versió editable i versió “només vista”. En tenir dues versions i necessitar més  complexitat, la vista “form” té moltes més opcions.
+
+> ❕ **Atenció**: en aquesta vista cal tenir en compte que al final es traduirà en elements  HTML i CSS i que els selectors CSS són estrictes amb l'ordre i jerarquia de les etiquetes. Per tant, no totes les combinacions funcionen sempre.
+
+El formulari deixa certa llibertat al desenvolupador per a controlar la  disposició dels “fields” i l'estètica. No obstant això, hi ha un esquema que convé seguir.
+
+Un formulari pot ser l'etiqueta “**<form>**” amb etiquetes de “fields” dins, igual que el “tree”. Però aconseguir un bon resultat serà més complicat i cal introduir elements HTML. Odoo  proposa uns contenidors amb uns estils predefinits que funcionen bé i  estandarditzen els formularis de tota l'aplicació.
+
+
+
+Perquè un formulari quede bé i no ocupe tota la pantalla es pot usar l'etiqueta “**<sheet>**” que englobe a la resta d'etiquetes. Si la utilitzem, els “fields”  perdran el “label”, per la qual cosa hem de fer servir l'etiqueta“**<group string=”nom del grup”>**” abans de les dels “fields”. També es pot posar en cada “field” l'etiqueta “**<label for="nom del field">**”.
+
+Si fem diversos “**groups**” o “groups dins de groups”, el CSS d'Odoo ja alinea els “fields” en  columnes o els separa correctament. No obstant això, si volem separar  manualment alguns “fields”, podem fer servir l'etiqueta “**<separator string="nom  del separador"/>**”.
+
+Un altre element de separació i organització és “**<notebook> <page string="titol">**”, que crea unes pestanyes que amaguen parts del formulari i permeten que càpia en la pantalla.
+
+
+
+> ❕ **Atenció**: les combinacions de “group”, “label”, “separator”, “notebook” i “page” són  moltes. Es recomana veure com han fet els formularis en algunes parts  d'Odoo. Els formularis oficials tenen moltes coses més complexes.  Algunes d'elles les observarem a continuació.
+
+Una vegada esmentats els elements d'estructura del formulari, veurem com modificar l'aparença dels “fields”.
+
+
+
+#### 5.2.1 Definir una vista “tree” específica als “X2many”
+
+Els “One2many” i “Many2many” es mostren, per defecte, dins d'un formulari  com una sub-vista “tree”. Odoo agafa la vista “tree” amb més prioritat  del model al qual fa referència el “X2many” i la incrusta dins del  formulari. Això provoca dos problemes:
+
+- Si canvies aquella vista també canvien els formularis.
+- Les vistes “tree” quan són independents solen mostrar més “fields” dels quals necessites dins d'un formulari que les referencia.
+
+Per això es pot definir un “tree” dins del “field”:
+
+```xml
+<field name="subscriptions" colspan="4">
+  <tree>...</tree>
+</field>
+```
+
+
+
+#### 5.2.2 Widgets
+
+Un “widget” és un component del client web que serveix per a representar  una dada d'una forma determinada. Un “widget” té una plantilla HTML, un  estil amb CSS i un comportament definit amb Javascript. Si volem, per  exemple, mostrar i editar dates, Odoo té un “widget” per als “Datetime”  que mostra la data amb format de data i mostra un calendari quan estem  en manera edició.
+
+Alguns  “fields” poden mostrar-se amb diferents “widgets” en funció del que  vulguem. Per exemple, les imatges per defecte estan en un “widget” que  permet descarregar-les, però no veure-les en la web. Si li posem  “widget=’image’” les mostrarà. 
+
+És possible fer els nostres propis “widgets”, no obstant això, requereix  saber modificar el client web, la qual cosa no està contemplat en  aquesta unitat didàctica.
+
+Ací tenim alguns “widgets” disponibles per a “fields” numèrics:
+
+- **integer**: el número sense comes. Si està buit, mostra un 0.
+- **char**: el caràcter, encara que mostra el camp més ample. Si està buit mostra un buit.
+- **id**: no es pot editar.
+- **float**: el número amb decimals
+- **percentpie**:  un gràfic circular amb el percentatge.
+- **progressbar**: una barra de progrés
+- **monetary**: amb dues decimals.
+- **field_float_rating**: estreles en funció d'un float.
+
+Per als “fields” de text tenim alguns que amb el seu nom s'expliquen a soles pel seu nom: char, text, email, url, date, html.
+
+Per als booleans, a partir d'Odoo 13 es pot mostrar una cinta al costat del formulari amb el “widget” anomenat “**web_ribbon**”.
+
+Els “fields” relacionals es mostren per defecte com un “selection” o un “tree”, però poden ser:
+
+- **many2onebutton**: indica només si està seleccionat
+- **many2many_tags**: que mostra les dades com etiquetes. 
+
+> ❕ **Atenció**: la llista de “widgets” és molt llarga i van entrant i eixint en les  diferents versions d'Odoo. Recomanem explorar els mòduls oficials i  veure com s'utilitzen per a copiar el codi en el nostre mòdul. Hi ha  molts més, alguns sols estan si has instal·lat un determinat mòdul,  perquè es van fer a propòsit per a aqueix mòdul, encara que els pots  aprofitar si el poses com a dependència.
+
+#### 5.2.3 Valors per defecte en els One2many
+
+Quan tenim un “One2many” en una vista “form”, ens dona l'opció de crear nous registres. Recordem que un “One2many” no és més que una representació  del “Many2one” que hi ha en l'altre model. Per tant, si creem nous  registres, necessitem que el “Many2one” del model a crear referencie al  registre que estem modificant del model que té el formulari. 
+
+Per a aconseguir que el formulari que sale en la finestra emergent tinga aqueix valor per defecte, el que farem serà passar per context una dada amb un nom especial que serà interpretat: **context="{'default_<nom del field many2one>':active_id}**". 
+
+Això es pot fer també en un “action”. De fet, en pressionar un element del “tree” s'executa un “action” també:
+
+```xml
+<field name="context">{"default_doctor": active_id}</field>
+```
+
+> ❕ **Atenció**: el concepte de context en Odoo no està explicat encara. De moment  pensem que és un calaix de sastre on posar les variables que volem  passar de la vista al controlador i viceversa.
+
+La paraula reservada “active_id” és una variable que apunta al “id” del registre que està actiu en aquest formulari. Per saber més de com utilitzar “context” podeu consultar [https://www.cybrosys.com/blog/how-to-use-context-and-domain-in-odoo-13](https://www.google.com/url?q=https://www.cybrosys.com/blog/how-to-use-context-and-domain-in-odoo-13&sa=D&source=editors&ust=1726775625775578&usg=AOvVaw1NbnDoc5-tESxKLBE0gTr5) i [https://odootricks.tips/about/building-blocks/context/](https://www.google.com/url?q=https://odootricks.tips/about/building-blocks/context/&sa=D&source=editors&ust=1726775625775911&usg=AOvVaw3MfzO1CgvsiImDMaKJ0-wI).
+
+#### 5.2.4 Domains als Many2one
+
+Encara que es poden definir en el model, pot ser que en una vista determinada  necessitem un “domain” més específic. Així es defineixen:
+
+```xml
+<field name="hotel" domain="[('ishotel', '=', True)]"/>
+```
+
+#### 5.2.5 Formularis dinàmics
+
+El client web d'Odoo és una web reactiva. Això vol dir que reacciona a les accions de l'usuari o a esdeveniments de manera automàtica. Part  d'aquesta reactivitat es pot definir en la vista “form” fent que es  modifique en funció de diversos factors. Això s'aconsegueix amb  l'atribut “attrs” entre altres dels “fields”.
+
+**Es pot ocultar condicionalment un “field”**:
+
+```xml
+<field name="boyfriend_name" attrs="{'invisible':[('married', '!=', False)]}" />
+<field name="boyfriend_name" attrs="{'invisible':[('married', '!=', 'selection_key')]}" />
+```
+
+Es pot mostrar o ocultar en manera edició o lectura:
+
+```xml
+<field name="partido" class="oe_edit_only"/>
+<field name="equipo" class="oe_read_only"/>
+```
+
+Molts formularis tenen estats i es comporten com un assistent. En funció de  cada estat es poden mostrar o ocultar “fields”. Hi ha una drecera a  l'exemple anterior si tenim un “field” que específicament es diu  “state”. Amb l'atribut “states” es pot mostrar o ocultar elements de la  venda:
+
+```xml
+<group states="i,c,d">                         
+   <field name="name"/>
+</group>
+```
+
+
+
+També existeix l'opció d'ocultar una columna d'un “tree” d'un “X2many”:
+
+```xml
+<field name="lot_id" attrs="{'column_invisible': [('parent.state', 'not in', ['sale', 'done'])] }"/>
+```
+
+
+
+> 💬 **Interessant**: fixa't en l'exemple anterior que diu “parent.state”. Això fa referència al  “field state” del model pare d'aqueix “tree”. Cal tenir en compte que  aqueix “tree” es mostra amb el model al qual fa referència el “X2many”,  però està dins d'un formulari d'un altre model.
+
+Dins dels formularis dinàmics, **es pot editar condicionalment un “field”**. Això vol dir que permetrà a l'usuari modificar un “field” en funció d'una condició:
+
+```xml
+<field name="name2" attrs="{'readonly': [('condition', '=', False)]}"/>
+```
+
+Vegem ara un exemple amb tots els “attrs”:
+
+```xml
+<field name="name" attrs="{'invisible': [('condition1', '=', False)],
+                          'required': [('condition2', '=', True)],
+                          'readonly': [('condition3','=',True)]}" />
+```
+
+
+
+#### 5.2.6  Assistents
+
+Els formularis d'Odoo poden ser assistents amb les tècniques que acabem  d'estudiar. A partir d'Odoo 11 s'usa el “field status”, l'atribut  “states” i un “widget” anomenat “statusbar” que mostra aquest “field” en la part superior del formulari com unes fletxes. 
+
+```xml
+<field name="state" widget="statusbar" statusbar_visible="draft,sent,progress,invoiced,done" />
+```
+
+
+
+### 5.3 Vista Kanban
+
+La vista “tree” i la vista “form” són les que funcionen per defecte en  qualsevol “action”. La resta de vistes, com la “Kanban”, necessiten una  definició en XML per a funcionar.
+
+A més, donada la gran quantitat d'opcions que tenim en fer un “Kanban”,  no disposem d'etiquetes com en el “form” que després es traduïsquen en  HTML o CSS i donen un format estàndard i confortable. Quan estem  definint una vista “Kanban” entrem en el terreny del llenguatge “QWeb” i de l'HTML o CSS explícit.
+
+
+
+> 💬 **Interessant**: aprendre els detalls de QWeb, HTML i CSS necessaris per a dominar el  disseny dels “Kanban” suposa molt espai que no podem dedicar en aquest  capítol. De moment, la millor manera de fer-los és entendre com  funcionen els exemples i mirar, copiar i pegar el codi dels “Kanban” que ja estan fets.
+
+Vegem un exemple mínim de “Kanban” on descriurem posteriorment per a què serveixen les etiquetes i atributs.
+
+```xml
+<record model="ir.ui.view" id="terraform.planet_kanban_view">
+               <field name="name">Student kanban</field>
+               <field name="model">school.student</field>
+               <field name="arch" type="xml">
+                   <kanban>
+                   <!-- Estos fields se cargan inicialmente y pueden ser utilizados
+                   por la lógica del Kanban -->
+                       <field name="name" />
+                       <field name="id" /> <!-- Es importante añadir el id para el
+                       record.id.value posterior -->
+                       <field name="image" />
+                       <templates>
+                           <t t-name="kanban-box">
+                               <div class="oe_product_vignette"> 
+                          <!-- Aprovechando un CSS de products -->
+                                   <a type="open">
+                                       <img class="o_image_64_contain"
+                                            t-att-alt="record.name.value"
+                                            t-att-src="kanban_image('school.student', 'image', record.id.raw_value)" />
+                                   </a>
+                   <!-- Para obtener la imagen necesitamos una función javascript
+                        que proporciona Odoo Llamada kanban-image y esta necesita
+                        el nombre del modelo, el field y el id para encontrarla -->
+                  <!-- record es una variable que tiene QWeb para acceder a las
+                       propiedades del registro que estamos mostrando. Las propiedades
+                       accesibles son las que hemos puesto en los fields de arriba. -->
+                                   <div class="oe_product_desc">
+                                       <h4>
+                                   <a type="edit"> <!-- Abre un formulario de edición -->
+                                                 <field name="id"></field>
+                                                 <field name="name"></field>
+                                   </a>
+                                       </h4>
+                                   </div>
+                               </div>
+                           </t>
+                       </templates>
+                   </kanban>
+               </field>
+           </record>
+```
+
+### 5.4 Vista Calendar
+
+Aquesta vista mostra un calendari si les dades dels registres del model tenen  almenys un “field” que indica una data i un altre que indique una data  final o una duració. 
+
+La sintaxi és molt simple, vegem un exemple:
+
+```xml
+<record model="ir.ui.view" id="school.travel_calendar">
+               <field name="name">travel calendar</field>
+               <field name="model">school.travel</field>
+               <field name="arch" type="xml">
+                   <calendar string="Travel Calendar" date_start="launch_time"
+              date_delay="distance" <!-- Puede ser delay (en horas) o date_stop -->
+              color="origin_school"> <!-- El color indica el field que lo modifica
+                                                No un color literalmente -->
+                       <field name="name"/>
+                   </calendar>
+               </field>
+</record>
+```
+
+Per defecte el “**delay**” ho divideix en dies segons la duració de la jornada laboral. Aquesta es pot modificar amb l'atribut “**day_length**”.
+
+### 5.5 Vista Graph
+
+La vista “graph” permet mostrar una gràfica a partir d'alguns “fields”  numèrics que tinga el model. Aquesta vista pot ser de tipus “pie”  (pastís en anglés), “bar” o “line” i es comporta agregant els valors que ha de mostrar.
+
+En aquest exemple es veu  un gràfic en el qual es mostrarà l'evolució de les notes en el temps de  cada estudiant. Per això el temps es posa com “**row**”, l'estudiant com a “**col**” i les dades a mostrar que són les qualificacions com “**measure**”. En cas d'oblidar posar a l’estudiant com a “**col**” ens mostraria l'evolució en el temps de la suma de les notes de tots els estudiants.
+
+```xml
+<record model="ir.ui.view" id="school.qualifications_graph">
+         <field name="name">Qualifications graph</field>
+         <field name="model">school qualifications</field>
+         <field name="arch" type="xml">
+              <graph string="Qualifications History" type="line">
+                   <field name="time"  type="row"/>
+            <field name="student"  type="col"/>
+                   <field name="qualification" type="measure"/>
+              </graph>
+         </field>
+</record>
+```
+
+
+
+### 5.6 Vista Search
+
+Aquesta no és una vista com les que hem vist fins ara. Entra dins de la mateixa categoria i es guarda en el mateix model, però **no es mostra ocupant la finestra, sinó la part superior on se situa el formulari de cerca**. El que permet és definir els criteris de cerca, filtrat o agrupament dels registres que es mostren en el client web.
+
+Vegem un exemple complet de vista “search”:
+
+```xml
+<search>
+<field name="name"/>
+<field name="inventor_id"/>
+<field name="description" string="Name and description" filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
+<field name="boxes" string="Boxes or @" filter_domain=   "['|',('boxes','=',self),('kg','=',self)]"/>
+<filter name="my_ideas" string="My Ideas" domain="[('inventor_id', '=', uid)]"/>
+<filter name="more_100" string="More than 100 boxes" domain="[('boxes','>',100)]"/>
+<filter name="Today" string="Today" domain="[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+<filter name="group_by_inventor" string="Inventor" context="{'group_by': 'inventor_id'}"/>
+<filter name="group_by_exit_day" string="Exit" context="{'group_by': 'exit_day:day'}"/>
+</search>
+```
+
+
+
+L'etiqueta “**field**” dins d'un “**search**” permet indicar per què “fields” cercarà. Es pot posar l'atribut “**filter_domain**” si volem incorporar una cerca més avançada fins i tot amb diversos  “fields”. S'usarà la sintaxi dels dominis que ja hem usat en Odoo en  altres ocasions.
+
+L'etiqueta “**filter**” estableix un filtre predefinit que s'aplicarà prement en el menú. Necessita l'atribut “**domain**” perquè faça la cerca.
+
+L'etiqueta “**filter**” també pot servir per a agrupar en funció d'un criteri. Per a això, cal posar en el “**context**” la clau “**group_by**”, de manera que farà una cerca i agruparà pel criteri que li diguem. Hi  ha un tipus especial d'agrupació per data (últim exemple) en la qual  podem especificar si volem agrupar per dia, mes o uns altres.
+
+
+
+## 6. Seguretat en models Odoo
+
+Odoo necessita conéixer que permisos tenen els usuaris/rols del sistema per a cada model particular del nostre mòdul. En el fitxer “**\__manifest__.py**” s'indica un la ruta a un fitxer on es detallen aquests permisos, d'una forma similar a:
+
+```xml
+'data': ['security/ir.model.access.csv',]
+```
+
+El contingut del fitxer és una capçalera, indicant que és cada camp (d'una manera molt descriptiva), seguit d'un conjunt de línies, cadascuna  definint una ACL (Access Control List).
+
+Vegem un exemple:
+
+```csv
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink acl_lista_tareas,lista_tareas.lista_default,model_lista_tareas_lista,base.group_user,1,1,1,1
+```
+
+En aqueix exemple es defineix:
+
+- Una ACL amb “id” anomenada “acl_lista_tareas”.
+- Un nom que indique que afecta al model “lista_tareas.lista” (i s'indica amb “lista_tareas.lista_default_model”).
+- El model “lista_tareas.lista”, indicat pel seu “External ID” com “model_lista_tareas_lista”.
+- El grup al qual s'aplica aquesta ACL. Indicant “base.group_user” s’aplica a tots els usuaris.
+- Una llista de permisos (lectura, escriptura, creació i esborrat) on “1” indica “permís concedit” i “0” indica “permís denegat”.
+
+Si volem definir grups propis perq l’ACL, a banda dels que puga poseir  Odoo, podem fer-ho indicant en “**\__manifest__.py**” un fitxer de definició  de grups de forma similar a aquesta:
+
+```xml
+'data': ['security/groups.xml','security/ir.model.access.csv',]
+```
+
+Vegem un exemple de definició de grup:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="grupo_bibliotecario" model="res.groups">
+           <field name="name">Bibliotecario</field>
+           <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        </record>
+</odoo>
+```
+
+Amb aquest exemple, hem creat el  “grupo_bibliotecario” i ho hem poblat afegint els usuaris que pertanguen al grup d'administradors (“base.user_admin”). Per a usar-ho al fitxer  “csv” amb les ACL, simplement haurem d'indicar en el camp grup  “grupo_bibliotecario”. 
+
+Més informació en [www.odoo.yenthevg.com/creating-security-groups-odoo/](https://www.google.com/url?q=http://www.odoo.yenthevg.com/creating-security-groups-odoo/&sa=D&source=editors&ust=1726775625797806&usg=AOvVaw3JprvM4wi_G8GQwU2tinPa) i en [https://www.odoo.com/documentation/17.0/es/developer/tutorials/server_framework_101/04_securityintro.html](https://www.google.com/url?q=https://www.odoo.com/documentation/17.0/es/developer/tutorials/server_framework_101/04_securityintro.html&sa=D&source=editors&ust=1726775625798129&usg=AOvVaw0kN7sl-LjsgK-V-fpP_8Gm)
+
+
+
+## 7. Mòduls d'exemple amb comentaris
+
+Es poden trobar exemples de mòduls d'Odoo comentats amb els conceptes tractats durant la unitat en [https://github.com/sergarb1/OdooModulosEjemplos](https://www.google.com/url?q=https://github.com/sergarb1/OdooModulosEjemplos&sa=D&source=editors&ust=1726775625798493&usg=AOvVaw3lgNw3WtiorbJh5MAKaG5t)
+
+
+
+## 8. Activitats
+
+### Activitat 01
+
+Modifica l’exemple més senzill de la llista de tasques de forma que:
+
+- Tinga una nova vista per veure les tasques en format “Kanban”.
+- Modifica les tasques per tindre una data assignada i crea una nova vista per veure en una vista “Calendar” la data assignada.
+
+### Activitat 02
+
+Amplia el mòdul de l’exemple de biblioteca de còmics de forma que:
+
+- Incloure la possibilitat de gestionar socis, emmagatzemar nom, cognom e identificador.
+- Introduïu la possibilitat que hi haja exemplars de còmics per prestar.
+
+- El model de còmic actual ha de servir com a referència de la informació  del còmic. A banda d’aquest model, jaureu de plantejar un nou model per a indicar exemplars de préstec d’eixe còmic. 
+- Aquests exemplars de préstec hauran de controlar només a qui estan prestats i  la data d’inici i data de final del préstec. No cal tindre un històric  de préstecs, només qui té el còmic en cada moment, quan se l’ha prestat i la data prevista de tornada.
+
+- La data de préstec no pot ser posterior al dia de hui.
+- La data prevista de tornada no pot ser anterior al dia de hui.
+
+### Activitat 03
+
+Crea un mòdul per a gestionar pacients i metges d’un hospital.
+
+Per cada pacient, tindrem un model amb les següents dades:
+
+- Nom i cognoms del pacient.
+- Símptomes.
+
+Per cada metge, tindrem un model amb les següents dades:
+
+- Nom i cognoms del metge.
+- Número de col·legiat.
+
+Per cada vegada que un metge ha atés un pacient, tindrem un model indicant el diagnòstic.
+
+Un pacient pot haver sigut atés per diversos metges i un metge pot haver atés diversos pacients.
+
+Implementa els models i les vistes que cregues adequades per als 3 models.
+
+### Activitat 04
+
+Fes un mòdul d’Odoo que represente els nostres estudis de cicles formatius a un institut:
+
+- Model Cicle formatiu. Cada instància representa a un cicle formatiu en un institut. Un cicle té un o més mòduls associats-
+- Model Mòdul. Cada “mòdul” estarà relacionat amb cicles formatius (al qual  pertany), alumnes matriculats i professor que ho imparteix.
+- Model Alumne. Relacionat amb els mòduls que té matriculat.
+- Model Professor. Relacionat amb els mòduls que imparteix.
+
+Implementa els models, les relacions necessàries i les vistes que cregues adequades per als 4 models.
+
+Una vegada en funcionament l’aplicació, volem que implementes la següent configuració de seguretat:
+
+- Els usuaris amb el rol “Director” podran modificar els registres dels models anteriors.
+- A més del director, els únics usuaris que podran veure les dades dels  professors (en mode lectura) seran els usuaris amb rol “Professor”. 
