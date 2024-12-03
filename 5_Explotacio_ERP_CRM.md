@@ -170,9 +170,9 @@ Sobre el codi anterior, vegem detalladament tot el que passa:
 > 💬 **Interessant**: Odoo està pensat perquè siga fàcilment modificable per la web. Sense  necessitat d'entrar al codi. Això és molt útil per a prototipar les  vistes, per exemple.
 > Una de les  funcionalitats és la manera desenvolupador, que permet, entre moltes  altres coses, explorar els models que té en aquest moment el servidor. 
 
-Els models tenen alguns atributs del model, com “**_name**” o “**_description**”. Un altre atribut de model important és “**_rec_name**” que indica que atribut pren nom el registre i que per defecte apunta a l'atribut “name” (no confondre amb “_name”).
+Els models tenen alguns atributs del model, com “**_name**” o “**_description**”. Un altre atribut de model important és “**_rec_name**” que indica que atribut pren nom al registre i que per defecte apunta a l'atribut “name” (no confondre amb “_name”).
 
-- En les vistes (que veurem més endavant), en alguns camps es basa en l'atribut marcat per “**_rec_name**”, que per defecte és “**name**”. Si no tenim un atribut “name” o volem que siga un altre atribut el que de nom, podem modificar-ho amb “**_rec_name=’nomatribut**’”.
+- En les vistes (que veurem més endavant), en alguns camps es basa en l'atribut marcat per “**_rec_name**”, que per defecte és “**name**”. Si no tenim un atribut “name” o volem que siga un altre atribut diferent del nom, podem modificar-ho amb “**_rec_name=’nomatribut**’”.
 
 
 
@@ -213,11 +213,7 @@ Al llarg d'aquest text es veuran exemples de com s'han definit “fields” sego
 
 A continuació, observarem els “fields” relacionals. Atés que l'ORM evita  que hàgem de crear les taules i les seues relacions en la base de dades, quan existeixen relacions entre models es necessiten uns camps que  definisquen aquelles relacions.
 
-
-
 **Exemple**: una comanda de venda té un client i un client pot fer moltes comandes de  venda. Al seu torn, aquesta comanda té moltes línies de comanda, que són només d’aquesta comanda i tenen un producte, que pot estar en moltes  línies de venda.
-
-
 
 En situacions com la de l'exemple, aquestes relacions acaben estant en la  base de dades amb claus alienes. Però amb els frameworks que implementen ORM, tot això és molt més senzill.
 
