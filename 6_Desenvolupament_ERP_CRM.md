@@ -20,7 +20,7 @@ Per a aclarir, podríem dir que el controlador són els mètodes que hi ha en el
 
 En la unitat anterior hem vist els"fields” computats i com funcionen les funcions en Python i Odoo. En aquest apartat veurem les facilitats que proporciona el framework d'Odoo per a manipular l'ORM (Object Relational Mapping).
 
-> ❕ **Atenció**: llegats a aquest punt, se suposa que hi ha un nivell mínim de coneixements de programació i del llenguatge de programació Python. 
+> ❕ **Atenció**: arribats a aquest punt, se suposa que hi ha un nivell mínim de coneixements de programació i del llenguatge de programació Python. 
 
 
 
@@ -401,7 +401,7 @@ També es pot usar per a esborrar registres:
 
 El format PDF té les seues peculiaritats i és complicat manejar-lo  directament com es fa amb HTML. Per això Odoo confia en un renderizador  d'HTML a PDF que utilitza el motor de WebKit (que és un dels motors de  renderitzat lliures més populars). Per a això fa una anomenada al  sistema perquè execute"**wkhtmltopdf**” que és un programa que transforma per terminal un HTML en PDF. És necessari, per tant, haver-ho instal·lat en el sistema. 
 
-Generalment, un"report” és cridat amb una acció des del client web. Aquesta acció és de tipus"**ir.actions.report**”. Aquesta acció de tipus"report” necessita una plantilla feta amb QWeb per a  interpretar-la, transformar-la en HTML i després invocar a"wkhtmltopdf” per a transformar-ho en PDF.
+Generalment, un"report” és referenciat amb una acció des del client web. Aquesta acció és de tipus"**ir.actions.report**”. Aquesta acció de tipus"report” necessita una plantilla feta amb QWeb per a  interpretar-la, transformar-la en HTML i després invocar a"wkhtmltopdf” per a transformar-ho en PDF.
 
 > 💬 **Interessant**: tant el *action* com la plantilla es guarden en la base de dades en *records*, però els dos tenen dreceres per a no escriure l'etiqueta \<record\>, així que els usarem.
 Aquestos són \<report\> per al *action* i \<template\> per a la plantilla.
