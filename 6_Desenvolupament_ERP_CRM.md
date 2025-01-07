@@ -1168,49 +1168,63 @@ pip3 install python-barcode[images]
 
 ### Activitat 01
 
-Amplia el mòdul de l’exemple de biblioteca de còmics de forma que:
+Modifica l’exemple de”EJ07-LigaFutbol” de forma que:
 
-- Incloure la possibilitat de gestionar socis, emmagatzemar nom, cognom e identificador.
-- Introduïu la possibilitat que hi haja exemplars de còmics per prestar.
-
-- El model de còmic actual ha de servir com a referència de la informació  del còmic. A banda d’aquest model, jaureu de plantejar un nou model per a indicar exemplars de préstec d’eixe còmic. 
-- Aquests exemplars de préstec hauran de controlar només a qui estan prestats i  la data d’inici i data de final del préstec. No cal tindre un històric  de préstecs, només qui té el còmic en cada moment, quan se l’ha prestat i la data prevista de tornada.
-
-- La data de préstec no pot ser posterior al dia de hui.
-- La data prevista de tornada no pot ser anterior al dia de hui.
+- Els partits per 4 o més gols de diferència, computen com “4” punts per al guanyador i “-1” punt per al perdedor.
+- Implementa a la vista dels partits un botó que en prémer-lo, sume 2 gols a tots  els equips de casa en tots els partits disputats. La classificació haurà de recalcular-se.
+- Implementa a la vista dels partits un botó que en prémer-lo, sume 2 gols a tots  els equips visitants en tots els partits disputats. La classificació  haurà de recalcular-se.
+- Implemente una cridada web mitjançant un Web Controller a l'URL [http://localhost:8069/eliminarempates](https://www.google.com/url?q=http://localhost:8069/eliminarempates&sa=D&source=editors&ust=1726776080432919&usg=AOvVaw1Mp-OVDPfotaLuDnpMCCJQ) que quan es faça, elimine tots els partits que estiguen empatats. Mostrarà el nombre de partits eliminats.
+- Genera un informe per a cada partit que mostre el resultat del partit en PDF.
+- Genera un Wizard per crear nous partits.
+- Implementa a la vista dels partits una vista “Graph” que mostre de forma visual  estadístiques dels gols marcats per partits a casa.
 
 ### Activitat 02
 
-Crea un mòdul per a gestionar pacients i metges d’un hospital.
+Fes un vídeo de no més de 3 minuts de  duració on expliques i demostres com has provat totes les opcions  (crear, modificar, consultar, eliminar) de l'API Rest de l’exemple  “EJ08-API-REST-Socios” amb una ferramenta similar a “PostMan” o  l'extensió de Visual Studio Code “Thunder Client”.
 
-Per cada pacient, tindrem un model amb les següents dades:
-
-- Nom i cognoms del pacient.
-- Símptomes.
-
-Per cada metge, tindrem un model amb les següents dades:
-
-- Nom i cognoms del metge.
-- Número de col·legiat.
-
-Per cada vegada que un metge ha atés un pacient, tindrem un model indicant el diagnòstic.
-
-Un pacient pot haver sigut atés per diversos metges i un metge pot haver atés diversos pacients.
-
-Implementa els models i les vistes que cregues adequades per als 3 models.
+Nota: el vídeo pot fer-se en qualsevol idioma (Valencià, Castellà o Anglés) i no requereix una gran edició, només es valorarà que es demostren les  proves i es detalle que s’està fent i per què.
 
 ### Activitat 03
 
-Fes un mòdul d’Odoo que represente els nostres estudis de cicles formatius a un institut:
+Posa en marxa en la teua màquina  l’exemple “EJ08-API-REST-Socios”. Després, crea en una aplicació Python, que executaràs en la teua màquina que permetrà llançar ordres a un bot  de Telegram per crear, modificar, esborrar i consultar registres de  Socis.
 
-- Model Cicle formatiu. Cada instància representa a un cicle formatiu en un institut. Un cicle té un o més mòduls associats-
-- Model Mòdul. Cada “mòdul” estarà relacionat amb cicles formatius (al qual  pertany), alumnes matriculats i professor que ho imparteix.
-- Model Alumne. Relacionat amb els mòduls que té matriculat.
-- Model Professor. Relacionat amb els mòduls que imparteix.
+El bot de Telegram per cada petició consultarà l’API Rest de “EJ08-API-REST-Socios”.
 
-Implementa els models, les relacions necessàries i les vistes que cregues adequades per als 4 models.
+Les ordres que haurà de suportar el bot de Telegram són:
 
-Una vegada en funcionament l’aplicació, volem que implementes la següent configuració de seguretat:
+- Crear,nombre=”nombre”,apellidos=”apellidos”,num_socio=”numerosocio”
+- Modificar,nombre=”nombre”,apellidos=”apellidos”,num_socio=”numerosocio”
+- Consultar,num_socio=”numerosocio”
+- Borrar,num_socio=”numerosocio”
 
-- Els usuaris amb el rol “Director” podran modificar els registres dels models anteriors.
-- A més del director, els únics usuaris que podran veure les dades dels  professors (en mode lectura) seran els usuaris amb rol “Professor”. 
+En el cas de rebre una ordre distinta, tornarà el missatge “Orden no soportada”.
+
+
+
+Per crear el bot Telegram has d’utilitzar BotFather:
+
+- [https://planetachatbot.com/como-crear-bot-para-telegram-y-darle-funcionalidad/](https://www.google.com/url?q=https://planetachatbot.com/como-crear-bot-para-telegram-y-darle-funcionalidad/&sa=D&source=editors&ust=1726776080434730&usg=AOvVaw2Q6IBVIoaThXT_jdE8A7Eq) 
+
+
+
+Per fer l’aplicació, et seran útils les següents biblioteques:
+
+- La biblioteca “request”, per consumir una API Rest en Python:
+
+- [https://j2logo.com/python/python-requests-peticiones-http/](https://www.google.com/url?q=https://j2logo.com/python/python-requests-peticiones-http/&sa=D&source=editors&ust=1726776080435242&usg=AOvVaw1w2tkXbXjzXx8K9XMolN2j)
+- [https://www.nylas.com/blog/use-python-requests-module-rest-apis/](https://www.google.com/url?q=https://www.nylas.com/blog/use-python-requests-module-rest-apis/&sa=D&source=editors&ust=1726776080435482&usg=AOvVaw0_PVhwCgASSPtTBmweZQAN)
+
+- La biblioteca “Python Telegram Bot” per crear un Bot de Telegram
+
+- [https://github.com/python-telegram-bot/python-telegram-bot](https://www.google.com/url?q=https://github.com/python-telegram-bot/python-telegram-bot&sa=D&source=editors&ust=1726776080435744&usg=AOvVaw2yf9YjMaZmdZ8LF27RqvrG)
+- [https://github.com/python-telegram-bot/python-telegram-bot/tree/master/examples](https://www.google.com/url?q=https://github.com/python-telegram-bot/python-telegram-bot/tree/master/examples&sa=D&source=editors&ust=1726776080436010&usg=AOvVaw10IB-BmjidJiFwe9XIwuUM)
+
+### Activitat 04
+
+De forma similar a l’exemple “EJ09-GenerarBarcode”, fes un Web Controller que es recolza en una eina externa PIL: [https://pypi.org/project/Pillow/](https://www.google.com/url?q=https://pypi.org/project/Pillow/&sa=D&source=editors&ust=1726776080436325&usg=AOvVaw2aBvqQgev521s49d6TBlTk) que genere a cada petició una imatge formada per píxels aleatoris, rebent  com paràmetres l'ample i llargària de la imatge desitjada.
+
+
+
+Pots ajudar-te del codi de l’exemple “EJ09-GenerarBarcode” i amb exemples de codi com en
+
+[https://www.daniweb.com/programming/software-development/threads/488949/looking-for-random-image-generator-pil-script](https://www.google.com/url?q=https://www.daniweb.com/programming/software-development/threads/488949/looking-for-random-image-generator-pil-script&sa=D&source=editors&ust=1726776080436774&usg=AOvVaw2b2w-qKlqSo0rTxdZonw82) i també per guardar la imatge com a text per mostrar-la en base64 a [https://stackoverflow.com/questions/646286/how-to-write-png-image-to-string-with-the-pil](https://www.google.com/url?q=https://stackoverflow.com/questions/646286/how-to-write-png-image-to-string-with-the-pil&sa=D&source=editors&ust=1726776080436979&usg=AOvVaw29nrAeo6PbJN82MXDV1M9Z)
