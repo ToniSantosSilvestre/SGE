@@ -1169,6 +1169,7 @@ pip3 install python-barcode[images]
 ### Activitat 01
 
 Modifica l’exemple de”EJ07-LigaFutbol” de forma que:
+[https://github.com/sergarb1/OdooModulosEjemplos/tree/master/EJ07-LigaFutbol/](https://github.com/sergarb1/OdooModulosEjemplos/tree/master/EJ07-LigaFutbol/)
 
 - Els partits per 4 o més gols de diferència, computen com “4” punts per al guanyador i “-1” punt per al perdedor.
 - Implementa a la vista dels partits un botó que en prémer-lo, sume 2 gols a tots  els equips de casa en tots els partits disputats. La classificació haurà de recalcular-se.
