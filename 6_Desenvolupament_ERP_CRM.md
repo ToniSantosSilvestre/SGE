@@ -439,6 +439,7 @@ Vegem un exemple senzill:
 ```
 
 Com es pot veure, QWeb té una variable anomenada"docs”, que és la llista de registres a mostrar en l'informe.
+Per a més informació teniu el següent [enllaç](https://www.cybrosys.com/blog/how-to-create-a-pdf-report-in-odoo-17)
 
 ## 4. Herència
 
