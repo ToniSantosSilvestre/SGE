@@ -1176,6 +1176,7 @@ Modifica l’exemple de”EJ07-LigaFutbol” de forma que:
 - Implementa a la vista dels partits un botó que en prémer-lo, sume 2 gols a tots  els equips de casa en tots els partits disputats. La classificació haurà de recalcular-se.
 - Implementa a la vista dels partits un botó que en prémer-lo, sume 2 gols a tots  els equips visitants en tots els partits disputats. La classificació  haurà de recalcular-se.
 - Implemente una cridada web mitjançant un Web Controller a l'URL [http://localhost:8069/eliminarempates](https://www.google.com/url?q=http://localhost:8069/eliminarempates&sa=D&source=editors&ust=1726776080432919&usg=AOvVaw1Mp-OVDPfotaLuDnpMCCJQ) que quan es faça, elimine tots els partits que estiguen empatats. Mostrarà el nombre de partits eliminats.
+- Creació d'un altre controlador anomenat [http://localhost:8069/visualitzaequip](http://localhost:8069/visualitzaequip) que passe per paràmetre el nom de l'equip i visualitze el conjunt d'informació del mateix (nom, descripció,any fundació, imatge)
 - Genera un informe per a cada partit que mostre el resultat del partit en PDF.
 - Genera un Wizard per crear nous partits.
 - Implementa a la vista dels partits una vista “Graph” que mostre de forma visual  estadístiques dels gols marcats per partits a casa.
