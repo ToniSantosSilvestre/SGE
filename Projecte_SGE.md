@@ -35,7 +35,6 @@ Necessitem crear una classe "**Sòcies**" que herete de **res.partner** i que in
 Al mateix temps tindrem, d'una classe "**Filaes**" que també hereten de **res.partner** amb els següents camps:
 
 - Any Fundació: Data
-- Breu història: Text 
 - Nombre components: camp calculat amb el sumatori de tots els actius, jovenils, honoraris i socials que es guarden al model d'històric
 
 Per altra banda, cal disposar d'una classe "**Històric**" que gestione les altes i baixes a les diferents filaes. Cal tindre en compte que una persona pot ser sòcia de diferents filaes al mateix temps. Dins dels seus camps, podem trobar:
@@ -71,9 +70,11 @@ En últim terme, hi haurà un model "**montepios**" amb les següents dades:
 
 Caldrà validar que el soci no està de baixa abans de fer qualsevol tipus d'aportació.
 
+Les vistes de "Socies" i "Filaes" inclouran les vistes Tree, Kanban i Form mentre que la d'Històric inclourà les vistes Tree i Form. A banda, la vista de Filaes, mostrarà una vista Graph comparativa del nombre de components de les files.
+
 Caldrà mostrar un **informe** amb el llistat ordenat de cada filà i el sumatori de montepios que han realitzat. El camp primari d'ordenació serà la data d'inscripció i el secundari la data de naixement en format ascendent i es lliurarà amb un títol amb el nom de la filà i el nom dels diferents membres ordenats per números.
 
-Les vistes de "Socies" i "Filaes" inclouran les vistes Tree, Kanban i Form mentre que la d'Històric inclourà les vistes Tree i Form. A banda, la vista de Filaes, mostrarà una vista Graph comparativa del nombre de components de les files.
+A més a més, hi haurà **dos controladors web**: un que filtrarà els socis per filaes i condició passant estos paràmetres per JSON i després un altre que passat per paràmetre un DNI, una filà i un any, retorne el conjunt de montepios realitzats en eixe any. 
 
 ### 1.2 Crear i activar equip:
 
