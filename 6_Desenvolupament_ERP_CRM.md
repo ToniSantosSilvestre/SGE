@@ -491,7 +491,7 @@ Si es fa herència de classe i s'afigen “fields” que volem veure, cal  ampli
 <field name="inherit_id" ref="modulo.id_xml_vista_padre"/>
 ```
 
-Després, en el “<arch>” no cal declarar una vista completa, sinó una  etiqueta que ja existisca en la vista pare i què fer amb aqueixa  etiqueta.
+Després, en el “\<arch\>” no cal declarar una vista completa, sinó una  etiqueta que ja existisca en la vista pare i què fer amb aqueixa  etiqueta.
 
 El que es pot fer és:
 
@@ -527,7 +527,7 @@ Vegem alguns exemples:
 
 
 
-Com es pot veure en l'exemple, es pot usar l'etiqueta “<xpath>” per a trobar etiquetes més difícils de referenciar o que estiguen repetides.
+Com es pot veure en l'exemple, es pot usar l'etiqueta “\<xpath\>” per a trobar etiquetes més difícils de referenciar o que estiguen repetides.
 
 És possible que tinguem una herència de classe en el model, però no  vulguem usar res de la vista original en un altre menú. Per a això podem especificar per a cada “action” les vistes a les quals està associat.
 
