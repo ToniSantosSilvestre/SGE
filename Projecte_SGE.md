@@ -39,9 +39,9 @@ Al mateix temps tindrem, d'una classe "**Filaes**" que també hereten de **res.p
 
 Per altra banda, cal disposar d'una classe "**Històric**" que gestione les altes i baixes a les diferents filaes. Cal tindre en compte que una persona pot ser sòcia de diferents filaes al mateix temps. Dins dels seus camps, podem trobar:
 
-- DNI_Soci: camp relacionat amb "socies"
+- DNI_Soci_ids: camp relacionat amb "socies"
 
-- Nom_Fila: camp relacionat amb "filaes"
+- Nom_Fila_ids: camp relacionat amb "filaes"
 
 - Acció: Alta o Baixa
 
