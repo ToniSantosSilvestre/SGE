@@ -25,7 +25,7 @@ L'Associació de Sant Jordi ens ha contractat perquè li resolguem la següent p
 
 Cada vegada hi ha més complexitat a l'hora de gestionar les filaes i es vol oferir un paraigües unificat que gestione els llistats oficials i les aportacions a compte (montepios) que realitzen els festers al llarg de l'any.
 
-El vostre treball és resoldre aquesta problemàtica mitjançant software a mida (aplicació mòbil i mòduls per a ERP) de forma que no només solucionen la problemàtica proposada, sinó que també siga usable i útil per agilitzar aquest procediment a l'Associació.
+El vostre treball és resoldre aquesta problemàtica mitjançant software a mida (amb mòduls per a ERP) de forma que no només solucionen la problemàtica proposada, sinó que també siga usable i útil per agilitzar aquest procediment a l'Associació.
 Els fitxers generats hauran de treballar i emmagatzemar la informació en un repositori de GitHub privat d’un dels membres de l’equip creat especialment per al repte.
 
 Necessitem crear una classe "**Sòcies**" que herete de **res.partner** i que incloga els següents camps si no estan ja:
