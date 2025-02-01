@@ -32,8 +32,10 @@ Necessitem crear una classe "**Sòcies**" que herete de **res.partner** i que in
 
 - Data_Naixement: Data
 
-Al mateix temps tindrem, d'una classe "**Filaes**" que també hereten de **res.partner** amb els següents camps:
+Al mateix temps tindrem, d'una classe "**Filaes**" que disposa dels següents camps:
 
+- CIF
+- Nom
 - Any Fundació: Data
 - Nombre components: camp calculat amb el sumatori de tots els actius, jovenils, honoraris i socials que es guarden al model d'històric
 
